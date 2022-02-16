@@ -3872,8 +3872,11 @@ function _JS_WebRequest_SetResponseHandler(request, arg, onresponse) {
 function _JS_WebRequest_SetTimeout(request, timeout) {
  wr.requestInstances[request].timeout = timeout;
 }
-function _PlayerIdentity(userName, alreadyChooseCharacter, score) {
- window.dispatchReactUnityEvent("GameOver", Pointer_stringify(userName), alreadyChooseCharacter, score);
+function _ObjectIdentity(objectName) {
+ window.dispatchReactUnityEvent("ObjectIdentity", Pointer_stringify(objectName));
+}
+function _PlayerIdentity(userName, alreadyChooseCharacter, character) {
+ window.dispatchReactUnityEvent("PlayerIdentity", Pointer_stringify(userName), alreadyChooseCharacter, character);
 }
 var webSocketInstances = [];
 function _SocketClose(socketInstance) {
@@ -20408,6 +20411,7 @@ Module.asmLibraryArg = {
  "_JS_WebRequest_SetRequestHeader": _JS_WebRequest_SetRequestHeader,
  "_JS_WebRequest_SetResponseHandler": _JS_WebRequest_SetResponseHandler,
  "_JS_WebRequest_SetTimeout": _JS_WebRequest_SetTimeout,
+ "_ObjectIdentity": _ObjectIdentity,
  "_PlayerIdentity": _PlayerIdentity,
  "_SocketClose": _SocketClose,
  "_SocketCreate": _SocketCreate,

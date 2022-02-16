@@ -1,4 +1,4 @@
-import { Modal, ModalOverlay, ModalContent, ModalBody, Center, Box, Img, VStack, Button, Text, useToast, Progress, CircularProgress, HStack } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalBody, Center, Box, Img, VStack, Button, Text, useToast, Progress, CircularProgress, HStack, ModalCloseButton, ModalFooter, ModalHeader, useDisclosure } from '@chakra-ui/react';
 import { BiAt, BiMailSend, BiVoicemail } from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
 import type { NextPage } from 'next'
@@ -10,6 +10,7 @@ import useUnityContext from '../engine/hooks/useUnityContext';
 import Cookies from 'js-cookie';
 import styles from "../styles/Home.module.css";
 import { ReactTypical } from '@deadcoder0904/react-typical'
+import ReactPlayer from 'react-player';
 
 
 const Home: NextPage = () => {
@@ -31,6 +32,7 @@ const Home: NextPage = () => {
       redirectUri: `${window.location.origin}/login?entrypoint=${window.location.pathname}`,
     });
   }, []);
+  const boxDisclosure = useDisclosure();
   const toast = useToast();
   React.useEffect(() => {
     if (userInfo.data?.nickname) {
@@ -41,10 +43,6 @@ const Home: NextPage = () => {
             setProgression(100);
             setTimeout(() => {
               setProgression(101);
-              toast({
-                title: `Welcome ${userInfo?.data?.nickname}`,
-                position: "bottom",
-              });
             }, 3000)
           }, 2500);
         } else {
@@ -58,50 +56,83 @@ const Home: NextPage = () => {
 
   React.useEffect(() => {
     if (progression === 99) {
+      const character = Cookies.get(`${userInfo.data?.nickname}:SetCharacter`);
       setTimeout(() => {
-        const character = Cookies.get(`${userInfo.data?.nickname}:SetCharacter`);
         unityContext.send("PlayerNameInput", "HandlePlayerIdentity", `${userInfo.data?.nickname}|${character ? true : false}|${character ? character : 1}`);
       }, 4000);
+      if (character) {
+        setTimeout(() => {
+          toast({
+            title: `Welcome ${userInfo?.data?.nickname}`,
+            position: "bottom",
+          });
+        }, 8000)
+      }
+      unityContext.on("PlayerIdentity", function (userName, alreadyChooseCharacter, character) {
+        Cookies.set(`${userName}:SetCharacter`, character, { expires: 1 });
+        toast({
+          title: `Welcome ${userInfo?.data?.nickname}`,
+          position: "bottom",
+        });
+      });
+      unityContext.on("ObjectIdentity", function (string) {
+        boxDisclosure.onOpen();
+      });
     }
   }, [progression]);
 
-  unityContext.on("PlayerIdentity", function (userName, alreadyChooseCharacter, score) {
-    Cookies.set(`${userName}:SetCharacter`, score);
-  });
 
   if (!userInfo.data && !userInfo.error) return (
     <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundColor={"black"} />
   )
 
   if (userInfo.data) return (
-    <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundColor={"black"}>
-      {
-        progression < 101 &&
-        (
-          <Center top={0} right={0} left={0} bottom={0} className={progression == 100 ? styles.loadingEntranceBackgroundBlur : styles.loadingEntranceBackground}>
-            <Center backgroundColor={"white"} borderRadius={"4px"} width={{ md: "25vw", sm: "75vw" }} height={"50vh"} className={progression == 100 ? styles.loadingEntranceModalBlur : styles.loadingEntranceModal} padding="32px">
-              {
-                progression <= 99 &&
-                <VStack spacing={3}>
-                  <CircularProgress value={progression} isIndeterminate={progression === 99} color='blue.300' size={"3xs"} />
-                  <HStack fontWeight={"600"} fontSize={"20px"}>
-                    <Text>
-                      Please Wait
-                    </Text>
-                    <ReactTypical
-                      steps={["", 1000, '.', 1000, "..", 1000, "...", 2000]}
-                      loop={Infinity}
-                      wrapper="div"
-                    />
-                  </HStack>
-                </VStack>
-              }
+    <>
+      <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundColor={"black"}>
+        {
+          progression < 101 &&
+          (
+            <Center top={0} right={0} left={0} bottom={0} className={progression == 100 ? styles.loadingEntranceBackgroundBlur : styles.loadingEntranceBackground}>
+              <Center backgroundColor={"white"} borderRadius={"4px"} width={{ md: "25vw", sm: "75vw" }} height={"50vh"} className={progression == 100 ? styles.loadingEntranceModalBlur : styles.loadingEntranceModal} padding="32px">
+                {
+                  progression <= 99 &&
+                  <VStack spacing={3}>
+                    <CircularProgress value={progression} isIndeterminate={progression === 99} color='blue.300' size={"3xs"} />
+                    <HStack fontWeight={"600"} fontSize={"20px"}>
+                      <Text>
+                        Please Wait
+                      </Text>
+                      <ReactTypical
+                        steps={["", 1000, '.', 1000, "..", 1000, "...", 2000]}
+                        loop={Infinity}
+                        wrapper="div"
+                      />
+                    </HStack>
+                  </VStack>
+                }
+              </Center>
             </Center>
-          </Center>
-        )
-      }
-      <Unity unityContext={unityContext} className={"unity-canvas"} />
-    </Box>
+          )
+        }
+        <Unity unityContext={unityContext} className={"unity-canvas"} />
+      </Box>
+      <Modal isCentered size={"4xl"} isOpen={boxDisclosure.isOpen} onClose={boxDisclosure.onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>New Live Entertainment</ModalHeader>
+          <ModalBody>
+            <Center paddingX={"50px"} paddingBottom={"20px"}>
+              <ReactPlayer
+                url={"https://www.youtube.com/watch?v=Uvufun6xer8"}
+                playing={true}
+                width={"720px"}
+                height={"400px"}
+              />
+            </Center>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
   )
 
   return (
