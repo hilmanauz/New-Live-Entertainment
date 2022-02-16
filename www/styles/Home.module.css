@@ -1,0 +1,30 @@
+.loadingEntranceModalBlur {
+  animation: extend 3s forwards;
+}
+
+.loadingEntranceBackgroundBlur {
+  animation: blur 3s forwards;
+  position: fixed;
+}
+
+.loadingEntranceBackground {
+  background-color: black;
+  position: fixed;
+}
+
+.loadingEntranceModal {
+  background-color: white;
+  position: relative;
+}
+
+@keyframes extend {
+  from {height: 50vh; width: 25vw; background-color: white;}
+  75% {background-color: white;}
+  to {height: 100vh; width: 100vw; background-color: transparent;}
+}
+
+@keyframes blur {
+  from {background-color: black;}
+  75% {background-color: black;}
+  to {background-color: transparent;}
+}
