@@ -34,10 +34,6 @@ const Home: NextPage = () => {
   const toast = useToast();
   React.useEffect(() => {
     if (userInfo.data?.nickname) {
-      setTimeout(() => {
-        const character = Cookies.get(`${userInfo.data?.nickname}:SetCharacter`);
-        unityContext.send("PlayerNameInput", "HandlePlayerIdentity", `${userInfo.data?.nickname}|${character ? true : false}|${character ? character : 1}`);
-      }, 4000)
       unityContext.on("progress", function (progression) {
         if (progression === 1) {
           setProgression(99);
@@ -59,6 +55,15 @@ const Home: NextPage = () => {
   },
     [userInfo.data?.nickname]
   );
+
+  React.useEffect(() => {
+    if (progression === 99) {
+      setTimeout(() => {
+        const character = Cookies.get(`${userInfo.data?.nickname}:SetCharacter`);
+        unityContext.send("PlayerNameInput", "HandlePlayerIdentity", `${userInfo.data?.nickname}|${character ? true : false}|${character ? character : 1}`);
+      }, 4000);
+    }
+  }, [progression]);
 
   unityContext.on("PlayerIdentity", function (userName, alreadyChooseCharacter, score) {
     Cookies.set(`${userName}:SetCharacter`, score);
