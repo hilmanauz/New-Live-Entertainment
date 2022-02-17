@@ -138,7 +138,7 @@ const Home: NextPage = () => {
             </Center>
           )
         }
-        <Center position={"absolute"} top={0} right={0} padding={"10px"}>
+        <Center position={"absolute"} top={0} right={"50%"} left={"50%"} padding={"10px"} zIndex={1000}>
           <IconButton cursor={"pointer"} as={BiFullscreen} aria-label={"fullscreen"} _focus={{ borderWidth: "0px" }} onClick={handleOnClickFullscreen} />
         </Center>
         <Unity unityContext={unityContext} className={"unity-canvas"} />
