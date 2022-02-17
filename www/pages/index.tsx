@@ -16,6 +16,7 @@ const Home: NextPage = () => {
   const userInfo = useUserInfo();
   const webAuth = useWebAuth();
   const [progression, setProgression] = React.useState(0);
+  const [landscape, setLandscape] = React.useState(false);
   const [status, setStatus] = React.useState("");
   const [isSelectCharacter, setIsSelectCharacter] = React.useState(false);
   const unityContext = useUnityContext();
@@ -37,6 +38,9 @@ const Home: NextPage = () => {
   const toast = useToast();
   React.useEffect(() => {
     if (userInfo.data?.nickname) {
+      if (window.screen.availWidth <= 768) {
+        setLandscape(true);
+      }
       unityContext.on("progress", function (progression) {
         if (progression === 1) {
           setProgression(99);
@@ -106,7 +110,7 @@ const Home: NextPage = () => {
   const handleOnClickFullscreen = () => {
     unityContext.setFullscreen(true);
   }
-
+  console.log(landscape);
   if (userInfo.data) return (
     <>
       <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundColor={"black"}>
@@ -138,10 +142,10 @@ const Home: NextPage = () => {
             </Center>
           )
         }
-        <Center position={"absolute"} top={0} right={"50%"} left={"50%"} padding={"10px"} zIndex={1000}>
+        <Center position={"absolute"} top={0} right={"50%"} left={"50%"} padding={"10px"} zIndex={1000} visibility={progression === 101 ? "visible" : "hidden"}>
           <IconButton cursor={"pointer"} as={BiFullscreen} aria-label={"fullscreen"} _focus={{ borderWidth: "0px" }} onClick={handleOnClickFullscreen} />
         </Center>
-        <Unity unityContext={unityContext} className={"unity-canvas"} />
+        <Unity unityContext={unityContext} className={`unity-canvas ${landscape ? "use-landscape" : "main-content"}`} />
       </Box>
       <Modal isCentered size={"4xl"} isOpen={boxDisclosure.isOpen} onClose={boxDisclosure.onClose}>
         <ModalOverlay />

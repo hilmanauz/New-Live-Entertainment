@@ -15,16 +15,14 @@ a {
   box-sizing: border-box;
 }
 
-.unity-canvas { width: 100vw; height: 100vh; }
+.unity-canvas { width: 100%; height: 100%; }
 
-@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
-  html {
-    transform: rotate(-90deg);
-    transform-origin: left top;
-    width: 100vh;
-    overflow-x: hidden;
-    position: absolute;
-    top: 100%;
-    left: 0;
-  }
+@media screen and (orientation: potrait) {
+   .main-content { display: none; }
+   .use-landscape { display: inline-block; }
+}
+
+.use-landscape {
+  -webkit-transform: rotate(90deg);    
+  transform: rotate(90deg);  
 }
