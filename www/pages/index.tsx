@@ -1,5 +1,5 @@
-import { Modal, ModalOverlay, ModalContent, ModalBody, Center, Box, Img, VStack, Button, Text, useToast, Progress, CircularProgress, HStack, ModalCloseButton, ModalFooter, ModalHeader, useDisclosure } from '@chakra-ui/react';
-import { BiAt, BiMailSend, BiVoicemail } from "react-icons/bi";
+import { Modal, ModalOverlay, ModalContent, ModalBody, Center, Box, Img, VStack, Button, Text, useToast, Progress, CircularProgress, HStack, ModalCloseButton, ModalFooter, ModalHeader, useDisclosure, IconButton } from '@chakra-ui/react';
+import { BiAt, BiFullscreen, BiMailSend, BiVoicemail } from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
 import type { NextPage } from 'next'
 import useUserInfo from '../engine/hooks/useUserInfo';
@@ -61,6 +61,7 @@ const Home: NextPage = () => {
       unityContext.on("StartGame", function (message) {
         setStatus(message);
       });
+
     }
   }, [progression]);
   React.useEffect(() => {
@@ -102,6 +103,10 @@ const Home: NextPage = () => {
     <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundColor={"black"} />
   )
 
+  const handleOnClickFullscreen = () => {
+    unityContext.setFullscreen(true);
+  }
+
   if (userInfo.data) return (
     <>
       <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundColor={"black"}>
@@ -133,6 +138,9 @@ const Home: NextPage = () => {
             </Center>
           )
         }
+        <Center position={"absolute"} top={0} right={0} padding={"10px"}>
+          <IconButton cursor={"pointer"} as={BiFullscreen} aria-label={"fullscreen"} _focus={{ borderWidth: "0px" }} onClick={handleOnClickFullscreen} />
+        </Center>
         <Unity unityContext={unityContext} className={"unity-canvas"} />
       </Box>
       <Modal isCentered size={"4xl"} isOpen={boxDisclosure.isOpen} onClose={boxDisclosure.onClose}>
