@@ -16,7 +16,7 @@ const Home: NextPage = () => {
   const userInfo = useUserInfo();
   const webAuth = useWebAuth();
   const [progression, setProgression] = React.useState(0);
-  const [landscape, setLandscape] = React.useState(false);
+  const [landscape, setLandscape] = React.useState({ width: 0, height: 0 });
   const [status, setStatus] = React.useState("");
   const [isSelectCharacter, setIsSelectCharacter] = React.useState(false);
   const unityContext = useUnityContext();
@@ -38,8 +38,10 @@ const Home: NextPage = () => {
   const toast = useToast();
   React.useEffect(() => {
     if (userInfo.data?.nickname) {
-      if (window.screen.availWidth <= 768) {
-        setLandscape(true);
+      if (window.screen.orientation.type.startsWith("potrait")) {
+        window.screen.availWidth <= 768 && setLandscape(config => ({ ...config, width: window.screen.availHeight, height: window.screen.availWidth }));
+      } else {
+        window.screen.availHeight <= 768 && setLandscape(config => ({ ...config, width: window.screen.availWidth, height: window.screen.availHeight }));
       }
       unityContext.on("progress", function (progression) {
         if (progression === 1) {
@@ -55,6 +57,7 @@ const Home: NextPage = () => {
   const character = Cookies.get(`${userInfo.data?.nickname}:SetCharacter`);
   React.useEffect(() => {
     if (progression === 99) {
+      window.screen.availWidth <= 768 && screen.orientation.lock("landscape");
       setTimeout(() => {
         unityContext.send("PlayerNameInput", "HandlePlayerIdentity", `${userInfo.data?.nickname}|${character ? true : false}|${character ? character : 1}`);
       }, 4000);
@@ -109,8 +112,10 @@ const Home: NextPage = () => {
 
   const handleOnClickFullscreen = () => {
     unityContext.setFullscreen(true);
+    if (window.screen.availWidth <= 768) {
+      screen.orientation.lock("landscape");
+    }
   }
-  console.log(landscape);
   if (userInfo.data) return (
     <>
       <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundColor={"black"}>
@@ -118,7 +123,7 @@ const Home: NextPage = () => {
           progression < 101 &&
           (
             <Center top={0} right={0} left={0} bottom={0} className={progression == 100 ? styles.loadingEntranceBackgroundBlur : styles.loadingEntranceBackground}>
-              <Center backgroundColor={"white"} borderRadius={"4px"} width={{ md: "25vw", sm: "75vw" }} height={"50vh"} className={progression == 100 ? styles.loadingEntranceModalBlur : styles.loadingEntranceModal} padding="32px">
+              <Center backgroundColor={"white"} borderRadius={"4px"} width={{ md: "25vw", sm: "75vw" }} height={landscape.height ? "95vh" : "50vh"} className={progression == 100 ? styles.loadingEntranceModalBlur : styles.loadingEntranceModal} padding="32px">
                 {
                   progression <= 99 &&
                   <VStack spacing={3}>
@@ -145,9 +150,9 @@ const Home: NextPage = () => {
         <Center position={"absolute"} top={0} right={"50%"} left={"50%"} padding={"10px"} zIndex={1000} visibility={progression === 101 ? "visible" : "hidden"}>
           <IconButton cursor={"pointer"} as={BiFullscreen} aria-label={"fullscreen"} _focus={{ borderWidth: "0px" }} onClick={handleOnClickFullscreen} />
         </Center>
-        <Unity unityContext={unityContext} className={`unity-canvas ${landscape ? "use-landscape" : "main-content"}`} />
+        <Unity unityContext={unityContext} style={{ width: landscape.width ? landscape.width : "100vw", height: landscape.height ? landscape.height : "100vh" }} />
       </Box>
-      <Modal isCentered size={"4xl"} isOpen={boxDisclosure.isOpen} onClose={boxDisclosure.onClose}>
+      <Modal isCentered size={landscape.height ? "sm" : "4xl"} isOpen={boxDisclosure.isOpen} onClose={boxDisclosure.onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>New Live Entertainment</ModalHeader>
@@ -155,9 +160,8 @@ const Home: NextPage = () => {
             <Center paddingX={"50px"} paddingBottom={"20px"}>
               <ReactPlayer
                 url={"https://www.youtube.com/watch?v=Uvufun6xer8"}
+                height={landscape.height - 100}
                 playing={true}
-                width={"720px"}
-                height={"400px"}
               />
             </Center>
           </ModalBody>
