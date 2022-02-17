@@ -17,6 +17,8 @@ const Home: NextPage = () => {
   const userInfo = useUserInfo();
   const webAuth = useWebAuth();
   const [progression, setProgression] = React.useState(0);
+  const [status, setStatus] = React.useState("");
+  const [isSelectCharacter, setIsSelectCharacter] = React.useState(false);
   const unityContext = useUnityContext();
   const handleLoginWithGoogle = React.useCallback(() => {
     webAuth.authorize({
@@ -39,12 +41,6 @@ const Home: NextPage = () => {
       unityContext.on("progress", function (progression) {
         if (progression === 1) {
           setProgression(99);
-          setTimeout(() => {
-            setProgression(100);
-            setTimeout(() => {
-              setProgression(101);
-            }, 3000)
-          }, 2500);
         } else {
           setProgression(progression * 100);
         }
@@ -53,34 +49,55 @@ const Home: NextPage = () => {
   },
     [userInfo.data?.nickname]
   );
-
+  const character = Cookies.get(`${userInfo.data?.nickname}:SetCharacter`);
   React.useEffect(() => {
     if (progression === 99) {
-      const character = Cookies.get(`${userInfo.data?.nickname}:SetCharacter`);
       setTimeout(() => {
         unityContext.send("PlayerNameInput", "HandlePlayerIdentity", `${userInfo.data?.nickname}|${character ? true : false}|${character ? character : 1}`);
       }, 4000);
-      if (character) {
+      unityContext.on("PlayerIdentity", function (userName, alreadyChooseCharacter, character) {
+        setIsSelectCharacter(true);
+        Cookies.set(`${userName}:SetCharacter`, character, { expires: 1 });
+      });
+      unityContext.on("StartGame", function (message) {
+        setStatus(message);
+      });
+    }
+  }, [progression]);
+  React.useEffect(() => {
+    if (userInfo.data?.nickname) {
+      if (status === "Game Already In Room" && character && !isSelectCharacter) {
+        setProgression(100);
         setTimeout(() => {
+          setProgression(101);
           toast({
             title: `Welcome ${userInfo?.data?.nickname}`,
             position: "bottom",
           });
-        }, 8000)
+        }, 4000);
+        return;
+      } else if (status === "Game Already Start" && !character) {
+        setProgression(100);
+        setTimeout(() => {
+          setProgression(101);
+        }, 4000);
       }
-      unityContext.on("PlayerIdentity", function (userName, alreadyChooseCharacter, character) {
-        Cookies.set(`${userName}:SetCharacter`, character, { expires: 1 });
-        toast({
-          title: `Welcome ${userInfo?.data?.nickname}`,
-          position: "bottom",
-        });
-      });
-      unityContext.on("ObjectIdentity", function (string) {
-        boxDisclosure.onOpen();
-      });
     }
-  }, [progression]);
+  }, [status]);
 
+  const logInfo = React.useMemo(() => {
+    if (!character) {
+      return "-Don't forget to choose your character-";
+    } else {
+      if (progression === 99 && status === "Game Already Start") {
+        return "-Joining the room-"
+      }
+    }
+  }, [status, progression, character])
+
+  unityContext.on("ObjectIdentity", function (string) {
+    boxDisclosure.onOpen();
+  });
 
   if (!userInfo.data && !userInfo.error) return (
     <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundColor={"black"} />
@@ -98,7 +115,7 @@ const Home: NextPage = () => {
                   progression <= 99 &&
                   <VStack spacing={3}>
                     <CircularProgress value={progression} isIndeterminate={progression === 99} color='blue.300' size={"3xs"} />
-                    <HStack fontWeight={"600"} fontSize={"20px"}>
+                    <HStack fontWeight={"600"} fontSize={"23px"}>
                       <Text>
                         Please Wait
                       </Text>
@@ -108,6 +125,9 @@ const Home: NextPage = () => {
                         wrapper="div"
                       />
                     </HStack>
+                    <Text pt={"20px"} fontSize={"18px"} fontWeight={"800"}>
+                      {logInfo}
+                    </Text>
                   </VStack>
                 }
               </Center>
