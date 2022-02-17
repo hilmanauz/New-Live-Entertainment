@@ -66,15 +66,15 @@ const Home: NextPage = () => {
   }, [progression]);
   React.useEffect(() => {
     if (userInfo.data?.nickname) {
-      if (status === "Game Already In Room" && character && !isSelectCharacter) {
-        setProgression(100);
+      if (status === "Game Already In Room" && character) {
+        !isSelectCharacter && setProgression(100);
         setTimeout(() => {
-          setProgression(101);
+          !isSelectCharacter && setProgression(101);
           toast({
             title: `Welcome ${userInfo?.data?.nickname}`,
             position: "bottom",
           });
-        }, 4000);
+        }, 3000);
         return;
       } else if (status === "Game Already Start" && !character) {
         setProgression(100);
