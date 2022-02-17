@@ -12,7 +12,6 @@ import styles from "../styles/Home.module.css";
 import { ReactTypical } from '@deadcoder0904/react-typical'
 import ReactPlayer from 'react-player';
 
-
 const Home: NextPage = () => {
   const userInfo = useUserInfo();
   const webAuth = useWebAuth();
