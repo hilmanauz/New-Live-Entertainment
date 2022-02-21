@@ -74,7 +74,7 @@ const Home: NextPage = () => {
             title: `Welcome ${userInfo?.data?.nickname}`,
             position: "bottom",
           });
-        }, 3000);
+        }, !isSelectCharacter ? 3000 : 1000);
         return;
       } else if (status === "Game Already Start" && !character) {
         setProgression(100);
@@ -142,7 +142,10 @@ const Home: NextPage = () => {
           )
         }
         <Center position={"absolute"} top={0} right={"50%"} left={"50%"} padding={"10px"} zIndex={1000}>
-          <IconButton cursor={"pointer"} as={BiFullscreen} aria-label={"fullscreen"} _focus={{ borderWidth: "0px" }} onClick={handleOnClickFullscreen} />
+          {
+            status === "Game Already In Room" &&
+            <IconButton cursor={"pointer"} as={BiFullscreen} aria-label={"fullscreen"} _focus={{ borderWidth: "0px" }} onClick={handleOnClickFullscreen} />
+          }
         </Center>
         <Unity unityContext={unityContext} className={"unity-canvas"} />
       </Box>
