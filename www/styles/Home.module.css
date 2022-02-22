@@ -28,3 +28,5 @@
   75% {background-color: black;}
   to {background-color: transparent;}
 }
+
+.unityCanvas { width: 100vw; height: 100vh; };

@@ -62,7 +62,6 @@ const Home: NextPage = () => {
       unityContext.on("StartGame", function (message) {
         setStatus(message);
       });
-
     }
   }, [progression]);
   React.useEffect(() => {
@@ -108,6 +107,7 @@ const Home: NextPage = () => {
     }
   }
 
+
   if (userInfo.data) return (
     <>
       <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundColor={"black"}>
@@ -145,7 +145,7 @@ const Home: NextPage = () => {
             <IconButton cursor={"pointer"} as={BiFullscreen} aria-label={"fullscreen"} _focus={{ borderWidth: "0px" }} onClick={handleOnClickFullscreen} />
           }
         </Center>
-        <Unity unityContext={unityContext} className={"unity-canvas"} />
+        <Unity unityContext={unityContext} className={styles.unityCanvas} />
       </Box>
       <Modal
         isOpen={boxDisclosure.isOpen}
@@ -233,7 +233,7 @@ const Home: NextPage = () => {
   )
 
   return (
-    <Center position={"fixed"} top={0} right={0} left={0} bottom={0} backgroundColor="black">
+    <Center position={"fixed"} top={0} right={0} left={0} bottom={0} backgroundColor="black" className={styles.mainContent}>
       <Center bg={"white"} borderRadius={"4px"} width={{ md: "25vw", sm: "75vw" }} height={"50vh"} padding="32px">
         <VStack alignItems={"normal"}>
           <Center>
