@@ -71,7 +71,7 @@ const Home: NextPage = () => {
         setTimeout(() => {
           !isSelectCharacter && setProgression(101);
           boxDisclosure.onOpen();
-        }, !isSelectCharacter ? 3000 : 1000);
+        }, !isSelectCharacter ? 3000 : 2000);
         return;
       } else if (status === "Game Already Start" && !character) {
         setProgression(100);
