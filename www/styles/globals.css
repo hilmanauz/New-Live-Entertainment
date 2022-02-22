@@ -15,14 +15,4 @@ a {
   box-sizing: border-box;
 }
 
-.unity-canvas { width: 100%; height: 100%; }
-
-@media screen and (orientation: potrait) {
-   .main-content { display: none; }
-   .use-landscape { display: inline-block; }
-}
-
-.use-landscape {
-  -webkit-transform: rotate(90deg);    
-  transform: rotate(90deg);  
-}
+.unity-canvas { width: 100vw; height: 100vh; };

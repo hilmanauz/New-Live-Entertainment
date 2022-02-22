@@ -1,5 +1,5 @@
-import { Modal, ModalOverlay, ModalContent, ModalBody, Center, Box, Img, VStack, Button, Text, useToast, Progress, CircularProgress, HStack, ModalCloseButton, ModalFooter, ModalHeader, useDisclosure, IconButton } from '@chakra-ui/react';
-import { BiAt, BiFullscreen, BiMailSend, BiVoicemail } from "react-icons/bi";
+import { Modal, ModalOverlay, ModalContent, ModalBody, Center, Box, Img, VStack, Button, Text, useToast, Progress, CircularProgress, HStack, ModalCloseButton, ModalFooter, ModalHeader, useDisclosure, IconButton, Flex } from '@chakra-ui/react';
+import { BiAt, BiChevronLeft, BiChevronRight, BiFullscreen, BiInfoCircle, BiMailSend, BiVoicemail } from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
 import type { NextPage } from 'next'
 import useUserInfo from '../engine/hooks/useUserInfo';
@@ -11,6 +11,7 @@ import Cookies from 'js-cookie';
 import styles from "../styles/Home.module.css";
 import { ReactTypical } from '@deadcoder0904/react-typical'
 import ReactPlayer from 'react-player';
+import Carousel from "nuka-carousel";
 
 const Home: NextPage = () => {
   const userInfo = useUserInfo();
@@ -70,10 +71,7 @@ const Home: NextPage = () => {
         !isSelectCharacter && setProgression(100);
         setTimeout(() => {
           !isSelectCharacter && setProgression(101);
-          toast({
-            title: `Welcome ${userInfo?.data?.nickname}`,
-            position: "bottom",
-          });
+          boxDisclosure.onOpen();
         }, !isSelectCharacter ? 3000 : 1000);
         return;
       } else if (status === "Game Already Start" && !character) {
@@ -141,7 +139,7 @@ const Home: NextPage = () => {
             </Center>
           )
         }
-        <Center position={"absolute"} top={0} right={"50%"} left={"50%"} padding={"10px"} zIndex={1000}>
+        <Center position={"absolute"} top={0} right={"50%"} left={"50%"} padding={"10px"}>
           {
             status === "Game Already In Room" &&
             <IconButton cursor={"pointer"} as={BiFullscreen} aria-label={"fullscreen"} _focus={{ borderWidth: "0px" }} onClick={handleOnClickFullscreen} />
@@ -149,20 +147,86 @@ const Home: NextPage = () => {
         </Center>
         <Unity unityContext={unityContext} className={"unity-canvas"} />
       </Box>
-      <Modal isCentered size={"4xl"} isOpen={boxDisclosure.isOpen} onClose={boxDisclosure.onClose}>
+      <Modal
+        isOpen={boxDisclosure.isOpen}
+        onClose={boxDisclosure.onClose}
+        isCentered
+      >
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>New Live Entertainment</ModalHeader>
-          <ModalBody>
-            <Center paddingX={"50px"} paddingBottom={"20px"}>
-              <ReactPlayer
-                url={"https://www.youtube.com/watch?v=Uvufun6xer8"}
-                playing={true}
-                width={"720px"}
-                height={"400px"}
-              />
-            </Center>
+        <ModalContent
+          maxW="720px"
+          overflow="hidden"
+          width={{ base: "360px", sm: "720px" }}
+        >
+          <ModalCloseButton
+            display={{ base: "none", sm: "block" }}
+            variant="outline"
+          />
+
+          <ModalBody padding="0">
+            <Box display={{ base: "block", sm: "flex" }}>
+              <Box
+                flex={1}
+                background="gray.300"
+                position="relative"
+                width="360px"
+                height="360px"
+              >
+                <Carousel
+                  height={"360px"}
+                  width={"360px"}
+                  renderCenterLeftControls={({ previousSlide }) => (
+                    <IconButton
+                      aria-label="left"
+                      icon={<BiChevronLeft />}
+                      onClick={() => {
+                        previousSlide();
+                      }}
+                      size="sm"
+                      variant="ghost"
+                    />
+                  )}
+                  renderCenterRightControls={({ nextSlide }) => (
+                    <IconButton
+                      aria-label="left"
+                      icon={<BiChevronRight />}
+                      onClick={() => {
+                        nextSlide();
+                      }}
+                      variant="ghost"
+                      size="sm"
+                    />
+                  )}
+                >
+                  <Center>
+                    <ReactPlayer
+                      url={"https://www.youtube.com/watch?v=Uvufun6xer8"}
+                      width={"360px"}
+                      height={"360px"}
+                    />
+                  </Center>
+                  <Center>
+                    <ReactPlayer
+                      url={"https://www.youtube.com/watch?v=Uvufun6xer8"}
+                      width={"360px"}
+                      height={"360px"}
+                    />
+                  </Center>
+                </Carousel>
+              </Box>
+              <Box
+                flex={1}
+                padding="20px"
+                paddingTop="36px !important"
+                width={{ base: "360px", sm: "360px" }}
+                height={{ base: "260px", sm: "360px" }}
+                overflowY="auto"
+              ></Box>
+            </Box>
           </ModalBody>
+          <ModalFooter display={{ base: "block", sm: "none" }}>
+            <Button onClick={boxDisclosure.onClose}>Close</Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
