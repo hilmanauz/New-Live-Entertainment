@@ -1,9 +1,7 @@
-import { Modal, ModalOverlay, ModalContent, ModalBody, Center, Box, Img, VStack, Button, Text, useToast, Progress, CircularProgress, HStack, ModalCloseButton, ModalFooter, ModalHeader, useDisclosure, IconButton, Flex } from '@chakra-ui/react';
-import { BiAt, BiChevronLeft, BiChevronRight, BiFullscreen, BiInfoCircle, BiMailSend, BiVoicemail } from "react-icons/bi";
-import { FcGoogle } from "react-icons/fc";
+import { Modal, ModalOverlay, ModalContent, ModalBody, Center, Box, Img, VStack, Button, Text, useToast, Progress, CircularProgress, HStack, ModalCloseButton, ModalFooter, ModalHeader, useDisclosure, IconButton, Flex, Spacer, Icon } from '@chakra-ui/react';
+import { BiArrowToRight, BiAt, BiChevronLeft, BiChevronRight, BiFullscreen, BiInfoCircle, BiMailSend, BiSkipNext, BiVoicemail } from "react-icons/bi";
 import type { NextPage } from 'next'
 import useUserInfo from '../engine/hooks/useUserInfo';
-import useWebAuth from '../engine/hooks/useWebAuth';
 import Unity from "react-unity-webgl";
 import React from 'react';
 import useUnityContext from '../engine/hooks/useUnityContext';
@@ -12,30 +10,17 @@ import styles from "../styles/Home.module.css";
 import { ReactTypical } from '@deadcoder0904/react-typical'
 import ReactPlayer from 'react-player';
 import Carousel from "nuka-carousel";
+import WelcomePage from '../components/WelcomePage';
+import FormModal from '../components/FormModal';
 
 const Home: NextPage = () => {
   const userInfo = useUserInfo();
-  const webAuth = useWebAuth();
   const [progression, setProgression] = React.useState(0);
   const [status, setStatus] = React.useState("");
+  const gameDisclosure = useDisclosure();
   const [isSelectCharacter, setIsSelectCharacter] = React.useState(false);
   const unityContext = useUnityContext();
-  const handleLoginWithGoogle = React.useCallback(() => {
-    webAuth.authorize({
-      connection: "google-oauth2",
-      responseType: "token id_token",
-      redirectUri: `${window.location.origin}/login?entrypoint=${window.location.pathname}`,
-    });
-  }, []);
-  const handleLoginWithEmail = React.useCallback(() => {
-    webAuth.authorize({
-      connection: "Username-Password-Authentication",
-      responseType: "token id_token",
-      redirectUri: `${window.location.origin}/login?entrypoint=${window.location.pathname}`,
-    });
-  }, []);
   const boxDisclosure = useDisclosure();
-  const toast = useToast();
   React.useEffect(() => {
     if (userInfo.data?.nickname) {
       unityContext.on("progress", function (progression) {
@@ -50,10 +35,18 @@ const Home: NextPage = () => {
     [userInfo.data?.nickname]
   );
   const character = Cookies.get(`${userInfo.data?.nickname}:SetCharacter`);
+  const username = Cookies.get(`${userInfo.data?.nickname}:SetForm`);
+
+  React.useEffect(() => {
+    username && gameDisclosure.onOpen();
+  }, [username]);
+
+  const accessToken = Cookies.get("accessToken");
   React.useEffect(() => {
     if (progression === 99) {
+      const username = Cookies.get(`${userInfo.data?.nickname}:SetForm`);
       setTimeout(() => {
-        unityContext.send("PlayerNameInput", "HandlePlayerIdentity", `${userInfo.data?.nickname}|${character ? true : false}|${character ? character : 1}`);
+        unityContext.send("PlayerNameInput", "HandlePlayerIdentity", `${username}|${character ? true : false}|${character ? character : 1}`);
       }, 4000);
       unityContext.on("PlayerIdentity", function (userName, alreadyChooseCharacter, character) {
         setIsSelectCharacter(true);
@@ -97,7 +90,7 @@ const Home: NextPage = () => {
   });
 
   if (!userInfo.data && !userInfo.error) return (
-    <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundColor={"black"} />
+    <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundImage={"./welcome-page.jpeg"} backgroundSize={"cover"} />
   )
 
   const handleOnClickFullscreen = () => {
@@ -106,11 +99,11 @@ const Home: NextPage = () => {
       screen.orientation.lock("landscape");
     }
   }
+  if (!gameDisclosure.isOpen && accessToken?.length) return <FormModal disclosure={gameDisclosure} />
 
-
-  if (userInfo.data) return (
+  if (gameDisclosure.isOpen) return (
     <>
-      <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundColor={"black"}>
+      <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundColor={"black"} backgroundImage={"./background.jpeg"} backgroundSize={"cover"}>
         {
           progression < 101 &&
           (
@@ -130,7 +123,7 @@ const Home: NextPage = () => {
                         wrapper="div"
                       />
                     </HStack>
-                    <Text pt={"20px"} fontSize={"18px"} fontWeight={"800"}>
+                    <Text pt={"20px"} fontSize={"18px"} fontWeight={"800"} textAlign={"center"}>
                       {logInfo}
                     </Text>
                   </VStack>
@@ -162,7 +155,6 @@ const Home: NextPage = () => {
             display={{ base: "none", sm: "block" }}
             variant="outline"
           />
-
           <ModalBody padding="0">
             <Box display={{ base: "block", sm: "flex" }}>
               <Box
@@ -232,53 +224,7 @@ const Home: NextPage = () => {
     </>
   )
 
-  return (
-    <Center position={"fixed"} top={0} right={0} left={0} bottom={0} backgroundColor="black" className={styles.mainContent}>
-      <Center bg={"white"} borderRadius={"4px"} width={{ md: "25vw", sm: "75vw" }} height={"50vh"} padding="32px">
-        <VStack alignItems={"normal"}>
-          <Center>
-            <Box fontWeight={"400"} fontSize={"25px"}>
-              New Live Entertainment
-            </Box>
-          </Center>
-          {/* <Text textAlign="center">{tour.description}</Text> */}
-          <br />
-          <VStack>
-            <Button
-              leftIcon={<BiMailSend />}
-              width={["90%", "100%"]}
-              color={"white"}
-              size={"lg"}
-              fontWeight={400}
-              fontSize={["14px", "16px"]}
-              _hover={{ backgroundColor: "black" }}
-              borderRadius={"0px"}
-              backgroundColor={"black"}
-              _focus={{ borderWidth: "0px" }}
-              onClick={handleLoginWithEmail}
-            >
-              Sign in with Email
-            </Button>
-            <Button
-              leftIcon={<FcGoogle />}
-              width={["90%", "100%"]}
-              color={"white"}
-              size={"lg"}
-              fontWeight={400}
-              fontSize={["14px", "16px"]}
-              _hover={{ backgroundColor: "black" }}
-              _focus={{ borderWidth: "0px" }}
-              borderRadius={"0px"}
-              backgroundColor={"black"}
-              onClick={handleLoginWithGoogle}
-            >
-              Sign in with Google
-            </Button>
-          </VStack>
-        </VStack>
-      </Center>
-    </Center>
-  )
+  return <WelcomePage />
 }
 
 export default Home

@@ -14,6 +14,18 @@ export default function useUnityContext() {
       companyName: "DefaultCompany",
       productName: "My project",
       productVersion: "0.1",
+      webglContextAttributes: {
+        powerPreference: "high-performance",
+        alpha: true,
+        antialias: true,
+        depth: true,
+        failIfMajorPerformanceCaveat: true,
+        premultipliedAlpha: true,
+        preserveDrawingBuffer: true,
+        stencil: true,
+        desynchronized: true,
+        xrCompatible: true
+      }
     })
   );
   return ref.current;

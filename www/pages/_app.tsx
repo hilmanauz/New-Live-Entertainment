@@ -7,7 +7,7 @@ const theme = extendTheme({
   styles: {
     global: {
       body: {
-        fontFamily: "'Roboto', sans-serif",
+        fontFamily: "MontThin",
         color: "#171717",
         fontSize: "14px",
         fontWeight: "400",
@@ -76,6 +76,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={"true"} />
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@1,700&family=Roboto:wght@100&display=swap" rel="stylesheet" />
         <link rel="manifest" href="manifest.json" />
       </Head>
       <Component {...pageProps} />

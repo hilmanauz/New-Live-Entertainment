@@ -5,7 +5,7 @@ import { useRouter } from "next/dist/client/router";
 import useWebAuth from "../engine/hooks/useWebAuth";
 import { Auth0DecodedHash } from "auth0-js";
 import styles from "../styles/Home.module.css";
-import { Box, Center, CircularProgress, HStack, VStack, Text } from "@chakra-ui/react";
+import { Box, Center, CircularProgress, HStack, VStack, Text, Flex } from "@chakra-ui/react";
 import useUserInfo from "../engine/hooks/useUserInfo";
 import { ReactTypical } from '@deadcoder0904/react-typical'
 
@@ -41,10 +41,10 @@ export default function LoginPage() {
     }
   }, [userInfo.data])
   return (
-    <Center position={"fixed"} top={0} right={0} left={0} bottom={0} backgroundColor="black">
-      <Center bg={"white"} borderRadius={"4px"} width={{ md: "25vw", sm: "75vw" }} height={"50vh"} padding="32px">
-        <VStack spacing={3}>
-          <CircularProgress isIndeterminate color='blue.300' size={"3xs"} />
+    <Center position={"fixed"} top={0} right={0} left={0} bottom={0} backgroundImage={"./welcome-page.jpeg"} backgroundPosition={"center"} backgroundSize={"cover"} className={styles.mainContent}>
+      <Flex flexDirection={"column"} bg={"white"} borderRadius={"10px"} width={{ md: "25vw", sm: "75vw" }} height={"50vh"}>
+        <Center flexDirection={"column"} height={"full"}>
+          <CircularProgress isIndeterminate color='blue.300' size={"3xs"} marginBottom={"20px"} />
           <HStack fontWeight={"600"} fontSize={"20px"}>
             {
               !userInfo.data ?
@@ -66,8 +66,8 @@ export default function LoginPage() {
                 </>
             }
           </HStack>
-        </VStack>
-      </Center>
+        </Center>
+      </Flex>
     </Center>
   );
 }

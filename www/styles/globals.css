@@ -6,6 +6,68 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+@font-face {
+   font-family: GaliverSans;
+   src: url("../public/Galiver/GaliverSans-lavD.ttf") format("truetype");
+}
+@font-face {
+   font-family: GaliverSansBold;
+   src: url("../public/Galiver/GaliverSansBold-nO7V.ttf") format("truetype");
+}
+@font-face {
+   font-family: GaliverSsansBoldItalic;
+   src: url("../public/Galiver/GaliverSansBoldItalic-1px0.ttf") format("truetype");
+}
+@font-face {
+   font-family: GaliverSansItalic;
+   src: url("../public/Galiver/GaliverSansItalic-RDWV.ttf") format("truetype");
+}
+@font-face {
+   font-family: MontBold;
+   src: url("../public/Mont/Mont-Bold.otf") format("opentype");
+}
+@font-face {
+   font-family: MontBoldItalic;
+   src: url("../public/Mont/Mont-BoldItalic.otf") format("opentype");
+}
+@font-face {
+   font-family: MontBlack;
+   src: url("../public/Mont/Mont-Black.otf") format("opentype");
+}
+@font-face {
+   font-family: MontBlackItalic;
+   src: url("../public/Mont/Mont-BlackItalic.otf") format("opentype");
+}
+@font-face {
+   font-family: MontBook;
+   src: url("../public/Mont/Mont-Book.otf") format("opentype");
+}
+@font-face {
+   font-family: MontLight;
+   src: url("../public/Mont/Mont-Light.otf") format("opentype");
+}
+@font-face {
+   font-family: MontLightItalic;
+   src: url("../public/Mont/Mont-LightItalic.otf") format("opentype");
+}
+@font-face {
+   font-family: MontRegular;
+   src: url("../public/Mont/Mont-Regular.otf") format("opentype");
+}
+@font-face {
+   font-family: MontRegularItalic;
+   src: url("../public/Mont/Mont-RegularItalic.otf") format("opentype");
+}
+@font-face {
+   font-family: MontThinItalic;
+   src: url("../public/Mont/Mont-ThinItalic.otf") format("opentype");
+}
+@font-face {
+   font-family: MontThin;
+   src: url("../public/Mont/Mont-Thin.otf") format("opentype");
+}
+
+
 a {
   color: inherit;
   text-decoration: none;

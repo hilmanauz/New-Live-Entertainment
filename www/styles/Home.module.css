@@ -8,7 +8,10 @@
 }
 
 .loadingEntranceBackground {
-  background-color: black;
+  background-image: url("../public/background.jpeg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   position: fixed;
 }
 
@@ -27,6 +30,29 @@
   from {background-color: black;}
   75% {background-color: black;}
   to {background-color: transparent;}
+}
+
+.welcomeHeader {
+  font-family: MontBold !important;
+}
+
+.welcomeBody {
+  font-family: MontThinItalic !important;
+}
+
+.border {
+  background: rgb(254,108,85) !important;
+  background: linear-gradient(90deg, rgba(254,108,85,1) 0%, rgba(255,99,138,1) 48%, rgba(255,85,210,1) 100%) !important;
+}
+
+.buttonBackground1 {
+  background: rgb(254,108,85) !important;
+  background: linear-gradient(90deg, rgba(254,108,85,1) 0%, rgba(255,99,138,1) 48%, rgba(255,85,210,1) 100%) !important;
+}
+
+.buttonBackground2 {
+  background: rgb(178,215,234) !important;
+  background: linear-gradient(90deg, rgba(178,215,234,1) 0%, rgba(199,155,238,1) 48%, rgba(243,95,243,1) 100%) !important;
 }
 
 .unityCanvas { width: 100vw; height: 100vh; };
