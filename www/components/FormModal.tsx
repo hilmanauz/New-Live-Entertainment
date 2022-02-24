@@ -43,7 +43,7 @@ function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
             <VStack padding={"32px"} fontSize={"2xl"} gap={3}>
               {
                 Object.entries(data).map(([key, value]) =>
-                  <HStack width={"100%"}>
+                  <HStack width={"100%"} key={key}>
                     <Center alignItems={"flex-end"} width={"50%"} height={"full"} fontFamily={"GaliverSans"}>
                       <Text textAlign={"start"}>{key === "uniqueCode" ? "Unique code" : key}</Text>
                       <Spacer />
