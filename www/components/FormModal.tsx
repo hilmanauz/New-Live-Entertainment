@@ -54,8 +54,8 @@ function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
                         key === "gender" ?
                           <Select variant={"flushed"} {...formRef.register(`${key}`)} fontWeight={"bold"} fontSize={"xl"}>
                             {
-                              ["Male", "Female"].map(item =>
-                                <option value={item}>{item}</option>
+                              ["Male", "Female"].map((item, key) =>
+                                <option value={item} key={key}>{item}</option>
                               )
                             }
                           </Select>
