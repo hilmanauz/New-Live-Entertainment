@@ -16,15 +16,15 @@ export default function useUnityContext() {
       productVersion: "0.1",
       webglContextAttributes: {
         powerPreference: "high-performance",
-        alpha: true,
-        antialias: true,
-        depth: true,
-        failIfMajorPerformanceCaveat: true,
-        premultipliedAlpha: true,
-        preserveDrawingBuffer: true,
-        stencil: true,
-        desynchronized: true,
-        xrCompatible: true
+        alpha: false,
+        antialias: false,
+        depth: false,
+        failIfMajorPerformanceCaveat: false,
+        premultipliedAlpha: false,
+        preserveDrawingBuffer: false,
+        stencil: false,
+        desynchronized: false,
+        xrCompatible: false
       }
     })
   );
