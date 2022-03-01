@@ -10,8 +10,8 @@ import styles from "../styles/Home.module.css";
 import { ReactTypical } from '@deadcoder0904/react-typical'
 import ReactPlayer from 'react-player';
 import Carousel from "nuka-carousel";
-import WelcomePage from '../components/WelcomePage';
-import FormModal from '../components/FormModal';
+import FormModal from '../engine/components/FormModal';
+import WelcomePage from '../engine/components/WelcomePage';
 
 const Home: NextPage = () => {
   const userInfo = useUserInfo();
@@ -99,9 +99,9 @@ const Home: NextPage = () => {
       screen.orientation.lock("landscape");
     }
   }
-  if (!gameDisclosure.isOpen && accessToken?.length) return <FormModal disclosure={gameDisclosure} />
+  if (!gameDisclosure.isOpen && accessToken?.length && userInfo.data) return <FormModal disclosure={gameDisclosure} />
 
-  if (gameDisclosure.isOpen) return (
+  if (gameDisclosure.isOpen && accessToken?.length && userInfo.data) return (
     <>
       <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundColor={"black"} backgroundImage={"./background.jpeg"} backgroundSize={"cover"}>
         {

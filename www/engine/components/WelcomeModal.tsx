@@ -1,7 +1,7 @@
 import { Box, VStack, Spacer, HStack, Button, Icon, Text, UseDisclosureProps } from '@chakra-ui/react'
 import React from 'react'
 import { BiArrowToRight } from 'react-icons/bi'
-import styles from "../styles/Home.module.css";
+import styles from "../../styles/Home.module.css";
 
 function WelcomeModal({ disclosure }: { disclosure: UseDisclosureProps }) {
   return (

@@ -2,7 +2,7 @@ import { Center, Flex, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
 import LoginModal from './LoginModal'
 import WelcomeModal from './WelcomeModal'
-import styles from "../styles/Home.module.css";
+import styles from "../../styles/Home.module.css";
 
 function WelcomePage() {
   const loginDisclosure = useDisclosure();

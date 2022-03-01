@@ -1,9 +1,9 @@
 import { VStack, Center, Box, Button } from '@chakra-ui/react'
 import React from 'react'
 import { BiMailSend } from 'react-icons/bi'
-import styles from "../styles/Home.module.css";
+import styles from "../../styles/Home.module.css";
 import { FcGoogle } from 'react-icons/fc'
-import useWebAuth from '../engine/hooks/useWebAuth';
+import useWebAuth from '../hooks/useWebAuth';
 
 function LoginModal() {
   const webAuth = useWebAuth();

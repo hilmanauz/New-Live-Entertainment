@@ -2,8 +2,8 @@ import { Box, VStack, HStack, Center, Spacer, FormControl, Select, Button, Text,
 import Cookies from 'js-cookie';
 import React from 'react'
 import { useForm } from 'react-hook-form';
-import useUserInfo from '../engine/hooks/useUserInfo';
-import styles from "../styles/Home.module.css";
+import useUserInfo from '../hooks/useUserInfo';
+import styles from "../../styles/Home.module.css";
 
 function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
   const userInfo = useUserInfo();
