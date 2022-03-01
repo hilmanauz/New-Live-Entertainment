@@ -1305,7 +1305,7 @@ function _emscripten_asm_const_id(code, a0) {
  return ASM_CONSTS[code](a0);
 }
 STATIC_BASE = GLOBAL_BASE;
-STATICTOP = STATIC_BASE + 3853648;
+STATICTOP = STATIC_BASE + 3853280;
 __ATINIT__.push({
  func: (function() {
   __GLOBAL__sub_I_AccessibilityScriptingClasses_cpp();
@@ -3371,12 +3371,21 @@ __ATINIT__.push({
   ___emscripten_environ_constructor();
  })
 });
-var STATIC_BUMP = 3853648;
+var STATIC_BUMP = 3853280;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 var tempDoublePtr = STATICTOP;
 STATICTOP += 16;
 assert(tempDoublePtr % 8 == 0);
+function _CloseInputKeyboard() {
+ document.getElementById("fixInput").blur();
+}
+function _FixInputOnBlur() {
+ SendMessage("_WebGLKeyboard", "LoseFocus");
+}
+function _FixInputUpdate() {
+ SendMessage("_WebGLKeyboard", "ReceiveInputChange", document.getElementById("fixInput").value);
+}
 function _JS_Cursor_SetImage(ptr, length) {
  var binary = "";
  for (var i = 0; i < length; i++) binary += String.fromCharCode(HEAPU8[ptr + i]);
@@ -4019,6 +4028,10 @@ function _JS_WebRequest_SetTimeout(request, timeout) {
 }
 function _ObjectIdentity(objectName) {
  window.dispatchReactUnityEvent("ObjectIdentity", Pointer_stringify(objectName));
+}
+function _OpenInputKeyboard(currentValue) {
+ document.getElementById("fixInput").value = Pointer_stringify(currentValue);
+ document.getElementById("fixInput").focus();
 }
 function _PlayerIdentity(userName, alreadyChooseCharacter, character) {
  window.dispatchReactUnityEvent("PlayerIdentity", Pointer_stringify(userName), alreadyChooseCharacter, character);
@@ -16654,8 +16667,8 @@ function nullFunc_vjji(x) {
  err("Build with ASSERTIONS=2 for more info.");
  abort(x);
 }
-Module["wasmTableSize"] = 119660;
-Module["wasmMaxTableSize"] = 119660;
+Module["wasmTableSize"] = 136044;
+Module["wasmMaxTableSize"] = 136044;
 function invoke_d(index) {
  var sp = stackSave();
  try {
@@ -20612,6 +20625,9 @@ Module.asmLibraryArg = {
  "invoke_vjii": invoke_vjii,
  "invoke_vjiiii": invoke_vjiiii,
  "invoke_vjji": invoke_vjji,
+ "_CloseInputKeyboard": _CloseInputKeyboard,
+ "_FixInputOnBlur": _FixInputOnBlur,
+ "_FixInputUpdate": _FixInputUpdate,
  "_JS_Cursor_SetImage": _JS_Cursor_SetImage,
  "_JS_Cursor_SetShow": _JS_Cursor_SetShow,
  "_JS_Eval_ClearInterval": _JS_Eval_ClearInterval,
@@ -20686,6 +20702,7 @@ Module.asmLibraryArg = {
  "_JS_WebRequest_SetResponseHandler": _JS_WebRequest_SetResponseHandler,
  "_JS_WebRequest_SetTimeout": _JS_WebRequest_SetTimeout,
  "_ObjectIdentity": _ObjectIdentity,
+ "_OpenInputKeyboard": _OpenInputKeyboard,
  "_PlayerIdentity": _PlayerIdentity,
  "_SocketClose": _SocketClose,
  "_SocketCreate": _SocketCreate,
