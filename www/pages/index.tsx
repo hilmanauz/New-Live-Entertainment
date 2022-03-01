@@ -33,12 +33,12 @@ const Home: NextPage = () => {
     }
   },
     [userInfo.data?.nickname]
-  );
+  );``
   const character = Cookies.get(`${userInfo.data?.nickname}:SetCharacter`);
   const username = Cookies.get(`${userInfo.data?.nickname}:SetForm`);
 
   React.useEffect(() => {
-    username && gameDisclosure.onOpen();
+    username && userInfo.data && gameDisclosure.onOpen();
   }, [username]);
 
   const accessToken = Cookies.get("accessToken");
@@ -93,15 +93,15 @@ const Home: NextPage = () => {
     <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundImage={"./welcome-page.jpeg"} backgroundSize={"cover"} />
   )
 
-  const handleOnClickFullscreen = () => {
-    unityContext.setFullscreen(true);
-    if (window.screen.availWidth <= 768 && window.screen.orientation.type.startsWith("potrait")) {
-      screen.orientation.lock("landscape");
-    }
-  }
+  // const handleOnClickFullscreen = () => {
+  //   unityContext.setFullscreen(true);
+  //   if (window.screen.availWidth <= 768 && window.screen.orientation.type.startsWith("potrait")) {
+  //     screen.orientation.lock("landscape");
+  //   }
+  // }
   if (!gameDisclosure.isOpen && accessToken?.length && userInfo.data) return <FormModal disclosure={gameDisclosure} />
 
-  if (gameDisclosure.isOpen && accessToken?.length && userInfo.data) return (
+  if (gameDisclosure.isOpen) return (
     <>
       <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundColor={"black"} backgroundImage={"./background.jpeg"} backgroundSize={"cover"}>
         {
@@ -132,12 +132,6 @@ const Home: NextPage = () => {
             </Center>
           )
         }
-        <Center position={"absolute"} top={0} right={"50%"} left={"50%"} padding={"10px"}>
-          {
-            status === "Game Already In Room" &&
-            <IconButton cursor={"pointer"} as={BiFullscreen} aria-label={"fullscreen"} _focus={{ borderWidth: "0px" }} onClick={handleOnClickFullscreen} />
-          }
-        </Center>
         <Unity unityContext={unityContext} className={styles.unityCanvas} />
       </Box>
       <Modal

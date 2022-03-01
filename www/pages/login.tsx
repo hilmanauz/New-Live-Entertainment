@@ -33,6 +33,8 @@ export default function LoginPage() {
     if (userInfo.data) {
       const parsedQuery = qs.parse(window.location.search);
       const entrypoint = parsedQuery.entrypoint;
+      Cookies.remove(`${userInfo.data?.nickname}:SetForm`);
+      Cookies.remove(`${userInfo.data?.nickname}:SetCharacter`)
       if (typeof entrypoint === "string") {
         setTimeout(() => {
           router.push(entrypoint);
