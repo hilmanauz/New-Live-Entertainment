@@ -89,11 +89,17 @@ const Home: NextPage = () => {
 
   const logInfo = React.useMemo(() => {
     if (!character) {
-      return "-Don't forget to choose your character-";
+      if (window.screen.availWidth <= 768) {
+        return <>
+          <p>Note: For mobile web user.</p><br /><p>Please use landscape mode</p>
+        </>      
+      } else {
+        return "-Don't forget to choose your character-";
+      }
     } else {
       if (progression === 99 && status === "Game Already Start") {
         return "-Joining the room-"
-      } else if (window.screen.availWidth <= 768 && window.screen.orientation.type.startsWith("potrait")) {
+      } else if (window.screen.availWidth <= 768) {
         return <>
           <p>Note: For mobile web user.</p><br /><p>Please use landscape mode</p>
         </>      
