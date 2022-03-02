@@ -89,7 +89,7 @@ const Home: NextPage = () => {
 
   const logInfo = React.useMemo(() => {
     if (!character) {
-      if (window.screen.availWidth <= 768) {
+      if (typeof window !== "undefined" && window.screen.availWidth <= 768) {
         return <>
           <p>Note: For mobile web user.</p><br /><p>Please use landscape mode</p>
         </>      
@@ -99,7 +99,7 @@ const Home: NextPage = () => {
     } else {
       if (progression === 99 && status === "Game Already Start") {
         return "-Joining the room-"
-      } else if (window.screen.availWidth <= 768) {
+      } else if (typeof window !== "undefined" && window.screen.availWidth <= 768) {
         return <>
           <p>Note: For mobile web user.</p><br /><p>Please use landscape mode</p>
         </>      
