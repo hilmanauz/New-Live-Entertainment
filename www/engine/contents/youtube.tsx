@@ -31,14 +31,14 @@ export default registry
           height={"95vh"}
           overflow="hidden"
           width={"95vw"}
+          margin={"0px"}
         >
-          <ModalBody padding="0">
-            <Box display={{ base: "block", sm: "flex" }} flex={1}>
-              <ReactPlayer
-                height={"95vh"}
-                width={"95vw"}
-                url={`https://www.youtube.com/watch?v=${props.instance.options.videoID}`}
-              />
+          <ModalBody margin={"0px"}
+          overflow="hidden"
+          padding={"0px"} >
+            <Box display={{ base: "block", sm: "flex" }}>
+              <iframe style={{display:"block", width:"100%", height:"95vh"}} src="https://cdn.siar.us/player/?link=nle.siar.us/nle/live"
+                scrolling="no" frameBorder="0" allow="autoplay" allowFullScreen />
             </Box>
           </ModalBody>
         </ModalContent>

@@ -81,10 +81,12 @@ const Home: NextPage = () => {
               description: "Hi welcome to the prototype version of the New Land Experience. The current version of metaverse, still has a lot of bugs. Hopefully it can still provide new experiences, in enjoying your virtual events . Lets play on New Land Experience!",
               title: "New Land Experience",
               items:
-                [{
-                  type: "youtube",
-                  src: "gElfIo6uw4g",
-                }]
+                [
+                  {
+                    src: "./gate.jpeg",
+                    type: "image"
+                  }
+                ]
             },
           }))
         }, !isSelectCharacter ? 3000 : 1000);

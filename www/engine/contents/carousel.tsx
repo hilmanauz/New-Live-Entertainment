@@ -21,7 +21,7 @@ import Carousel from "nuka-carousel";
 import ReactPlayer from "react-player";
 import registry from "./registry";
 import React from "react";
-import { css } from "@chakra-ui/react";
+import { AspectRatio, css } from "@chakra-ui/react";
 
 type CarouselItem = {
   src: string;
@@ -112,35 +112,30 @@ export default registry
                     ) : null}
                   >
                     {props.instance.options.items.map((item) => (
-                      <Flex
-                        position="relative"
-                        flex={1}
-                        key={item.src}
-                      >
-                        <Center width={{ xl: "540px", base: "360px", sm: "360px" }} height={{xl: "full", base: "full", sm: "360px"}}>
-                          {item.type === "youtube" ? (
-                            <ReactPlayer
-                              url={`https://www.youtube.com/watch?v=${item.src}`}
-                            />
-                          ) : (
-                            <>
-                              <Img src={item.src} />
-                              <Button
-                                leftIcon={<BiInfoCircle />}
-                                size="sm"
-                                position="absolute"
-                                bottom="10px"
-                                right="10px"
-                                as="a"
-                                href={item.src}
-                                target="_blank"
-                              >
-                                View detail
-                              </Button>
-                            </>
-                          )}
-                        </Center>
-                      </Flex>
+                      <AspectRatio key={item.src} ratio={4/3} maxWidth={{ xl: "540px", base: "360px", sm: "360px" }}>
+                        {item.type === "youtube" ? (
+                          <iframe
+                            src={`https://www.youtube.com/embed/${item.src}`}
+                            allowFullScreen
+                          />
+                        ) : (
+                          <>
+                            <Img src={item.src} objectFit='cover' />
+                            {/* <Button
+                              leftIcon={<BiInfoCircle />}
+                              size="sm"
+                              position="absolute"
+                              bottom="10px"
+                              right="10px"
+                              as="a"
+                              href={item.src}
+                              target="_blank"
+                            >
+                              View detail
+                            </Button> */}
+                          </>
+                        )}
+                      </AspectRatio>
                     ))}
                   </Carousel>
                 </Box>

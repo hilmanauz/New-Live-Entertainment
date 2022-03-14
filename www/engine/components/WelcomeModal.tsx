@@ -14,7 +14,8 @@ function WelcomeModal({ disclosure }: { disclosure: UseDisclosureProps }) {
         }</Text>
         <Spacer />
         <HStack justifyContent={"flex-end"} width={"full"}>
-          <Button fontFamily={"MontBold"} colorScheme={"gray"} variant={"ghost"} onClick={disclosure.onOpen} _focus={{ borderWidth: "0px" }}>Next <Icon as={BiArrowToRight} /></Button> </HStack>
+          <Button fontFamily={"MontBold"} colorScheme={"gray"} variant={"ghost"} onClick={disclosure.onOpen} _focus={{ borderWidth: "0px" }}>Next <Icon as={BiArrowToRight} /></Button> 
+        </HStack>
       </VStack>
     </>
   )
