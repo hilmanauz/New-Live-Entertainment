@@ -20,7 +20,6 @@ function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
       gender: "Male",
       age: "",
       username: "",
-      uniqueCode: ""
     }
   });
   const data = formRef.watch();
@@ -51,7 +50,7 @@ function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
                           <Spacer />
                           <Text textAlign={"end"}>:</Text>
                         </Center>
-                        <FormControl width={"50%"} isRequired={key === "username" || key === "uniqueCode"}>
+                        <FormControl width={"50%"}>
                           {
                             key === "gender" ?
                               <Select variant={"flushed"} {...formRef.register(`${key}`)} fontWeight={"bold"} fontSize={"xl"}>
@@ -72,7 +71,7 @@ function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
                     )
                   }
                   <Spacer />
-                  <Button type="submit" colorScheme={"pink"} fontWeight={"bold"} fontSize={"18px"} fontFamily={"MontRegular"} width={"full"}>
+                  <Button type="submit" colorScheme={"pink"} fontWeight={"extrabold"} fontSize={"18px"} fontFamily={"MontRegular"} width={"full"} paddingY={"30px"}>
                     Submit
                   </Button>
                 </VStack>

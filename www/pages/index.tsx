@@ -78,7 +78,7 @@ const Home: NextPage = () => {
           setContent(carousel.build({
             id: "123041",
             options: {
-              description: "Hi welcome to the prorotype version of the New Land Experience. The current version of metaverse, still has a lot of bugs. Hopefully it can still provide new experiences, in enjoying your virtual events . Lets play on New Land Experience!",
+              description: "Hi welcome to the prototype version of the New Land Experience. The current version of metaverse, still has a lot of bugs. Hopefully it can still provide new experiences, in enjoying your virtual events . Lets play on New Land Experience!",
               title: "New Land Experience",
               items:
                 [{
