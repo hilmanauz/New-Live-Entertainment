@@ -75,7 +75,18 @@ const Home: NextPage = () => {
         !isSelectCharacter && setProgression(100);
         setTimeout(() => {
           !isSelectCharacter && setProgression(101);
-          boxDisclosure.onOpen();
+          setContent(carousel.build({
+            id: "123041",
+            options: {
+              description: "Hi welcome to the prorotype version of the New Land Experience. The current version of metaverse, still has a lot of bugs. Hopefully it can still provide new experiences, in enjoying your virtual events . Lets play on New Land Experience!",
+              title: "New Land Experience",
+              items:
+                [{
+                  type: "youtube",
+                  src: "gElfIo6uw4g",
+                }]
+            },
+          }))
         }, !isSelectCharacter ? 3000 : 1000);
         return;
       } else if (status === "Game Already Start" && !character) {
@@ -116,7 +127,7 @@ const Home: NextPage = () => {
       setContent(youtube.build({
         id: "123041",
         options: {
-          videoID: "Uvufun6xer8",
+          videoID: "gElfIo6uw4g",
         },
       }))
       case "carousel":
@@ -124,10 +135,11 @@ const Home: NextPage = () => {
         id: "123041",
         options: {
           description: "",
+          title: name,
           items:
             [{
               type: "youtube",
-              src: "Uvufun6xer8",
+              src: "gElfIo6uw4g",
             }]
         },
       }))
@@ -189,87 +201,6 @@ const Home: NextPage = () => {
           />
         }
       </Box>
-      <Modal
-        isOpen={boxDisclosure.isOpen}
-        onClose={boxDisclosure.onClose}
-        isCentered
-      >
-        <ModalOverlay />
-        <ModalContent
-          maxW="720px"
-          overflow="hidden"
-          width={{ base: "360px", sm: "720px" }}
-        >
-          <ModalCloseButton
-            display={{ base: "none", sm: "block" }}
-            variant="outline"
-          />
-          <ModalBody padding="0">
-            <Box display={{ base: "block", sm: "flex" }}>
-              <Box
-                flex={1}
-                background="gray.300"
-                position="relative"
-                width="360px"
-                height="360px"
-              >
-                <Carousel
-                  height={"360px"}
-                  width={"360px"}
-                  renderCenterLeftControls={({ previousSlide }) => (
-                    <IconButton
-                      aria-label="left"
-                      icon={<BiChevronLeft />}
-                      onClick={() => {
-                        previousSlide();
-                      }}
-                      size="sm"
-                      variant="ghost"
-                    />
-                  )}
-                  renderCenterRightControls={({ nextSlide }) => (
-                    <IconButton
-                      aria-label="left"
-                      icon={<BiChevronRight />}
-                      onClick={() => {
-                        nextSlide();
-                      }}
-                      variant="ghost"
-                      size="sm"
-                    />
-                  )}
-                >
-                  <Center>
-                    <ReactPlayer
-                      url={"https://www.youtube.com/watch?v=Uvufun6xer8"}
-                      width={"360px"}
-                      height={"360px"}
-                    />
-                  </Center>
-                  <Center>
-                    <ReactPlayer
-                      url={"https://www.youtube.com/watch?v=Uvufun6xer8"}
-                      width={"360px"}
-                      height={"360px"}
-                    />
-                  </Center>
-                </Carousel>
-              </Box>
-              <Box
-                flex={1}
-                padding="20px"
-                paddingTop="36px !important"
-                width={{ base: "360px", sm: "360px" }}
-                height={{ base: "260px", sm: "360px" }}
-                overflowY="auto"
-              ></Box>
-            </Box>
-          </ModalBody>
-          <ModalFooter display={{ base: "block", sm: "none" }}>
-            <Button onClick={boxDisclosure.onClose}>Close</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
     </>
   )
 

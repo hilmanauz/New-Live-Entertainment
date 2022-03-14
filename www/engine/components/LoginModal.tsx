@@ -22,7 +22,7 @@ function LoginModal() {
     });
   }, []);
   return (
-    <VStack>
+    <VStack height={"full"}>
       <Center width={"full"} height={"175px"} className={styles.border} borderTopRadius={"10px"}>
         <Box fontFamily={"GaliverSans"} textAlign={"center"} fontSize={["20px", "25px"]} color={"white"}>
           New Live Entertainment
@@ -36,6 +36,7 @@ function LoginModal() {
             color={"white"}
             fontFamily={"MontRegular"}
             size={"lg"}
+            paddingY={"30px"}
             fontSize={["14px", "20px"]}
             borderRadius={"8px"}
             className={styles.buttonBackground1}
@@ -50,6 +51,7 @@ function LoginModal() {
             fontFamily={"MontRegular"}
             color={"white"}
             size={"lg"}
+            paddingY={"30px"}
             fontSize={["14px", "20px"]}
             className={styles.buttonBackground2}
             _focus={{ borderWidth: "0px" }}

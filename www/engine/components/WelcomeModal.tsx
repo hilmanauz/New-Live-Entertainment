@@ -6,11 +6,11 @@ import styles from "../../styles/Home.module.css";
 function WelcomeModal({ disclosure }: { disclosure: UseDisclosureProps }) {
   return (
     <>
-      <Box width={"full"} height={"10%"} className={styles.border} borderTopRadius={"10px"} />
+      <Box width={"full"} height={"100px"}className={styles.border} borderTopRadius={"10px"} />
       <VStack textAlign={"center"} height={"90%"} width={"full"} paddingY={"10px"} paddingX={"32px"} spacing={1} color={"black"}>
         <Text className={styles.welcomeHeader} fontSize={["40px", "60px"]}>Hello..</Text>
         <Text paddingX={"50px"} fontWeight={"600"} fontSize={["13px", "20px"]} className={styles.welcomeBody}>{
-          "Welcome at New Land Entertainment. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took galley of type and scrambled it to make a type specimen book"
+          "Welcome to the prototype version of the New Land Experience 😊. Hopefully it can provide a new experience in enjoying virtual events. Lets play on New Land Experience"
         }</Text>
         <Spacer />
         <HStack justifyContent={"flex-end"} width={"full"}>

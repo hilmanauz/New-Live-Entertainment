@@ -27,13 +27,16 @@ export default registry
       >
         <ModalOverlay />
         <ModalContent
-          maxW="720px"
+          maxW="95vw"
+          height={"95vh"}
           overflow="hidden"
-          width={{ base: "360px", sm: "720px" }}
+          width={"95vw"}
         >
           <ModalBody padding="0">
-            <Box display={{ base: "block", sm: "flex" }}>
+            <Box display={{ base: "block", sm: "flex" }} flex={1}>
               <ReactPlayer
+                height={"95vh"}
+                width={"95vw"}
                 url={`https://www.youtube.com/watch?v=${props.instance.options.videoID}`}
               />
             </Box>

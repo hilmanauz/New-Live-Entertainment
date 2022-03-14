@@ -1,7 +1,8 @@
 import { Button, IconButton } from "@chakra-ui/button";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Img } from "@chakra-ui/image";
-import { Box, Center, Flex, Text } from "@chakra-ui/layout";
+import { Box, Center, Flex, Text, VStack } from "@chakra-ui/layout";
+import styles from "../../styles/Home.module.css";
 import {
   BiInfoCircle,
   BiChevronLeft,
@@ -20,6 +21,7 @@ import Carousel from "nuka-carousel";
 import ReactPlayer from "react-player";
 import registry from "./registry";
 import React from "react";
+import { css } from "@chakra-ui/react";
 
 type CarouselItem = {
   src: string;
@@ -30,12 +32,13 @@ const items: CarouselItem[] = [{ src: "", type: "youtube" }];
 
 export default registry
   .from(
-    { items, description: "This is a description" },
+    { items, description: "This is a description", title: "" },
     {
-      required: ["items", "description"],
+      required: ["items", "description", "title"],
       type: "object",
       properties: {
         description: { type: "string" },
+        title: { type: "string" },
         items: {
           type: "array",
           items: {
@@ -56,7 +59,7 @@ export default registry
       const disclosure = useDisclosure();
       React.useEffect(() => {
         props.instance && disclosure.onOpen();
-      }, [props.instance])
+      }, [props.instance]);
       return (
         <Modal
           isOpen={disclosure.isOpen}
@@ -65,23 +68,25 @@ export default registry
         >
           <ModalOverlay />
           <ModalContent
-            maxW="720px"
+            maxW="60vw"
             overflow="hidden"
-            width={{ base: "360px", sm: "720px" }}
+            width={{ xl: "1080px", base: "720px", sm: "720px" }}
           >
+            <ModalCloseButton
+              display={{ base: "none", sm: "block" }}
+              variant="outline"
+              _focus={{borderWidth: "0px"}}
+              zIndex={"10"}
+            />
             <ModalBody padding="0">
-              <Box display={{ base: "block", sm: "flex" }}>
+              <Box display={{ base: "block", sm: "flex" }} width={"full"} height={"full"}>
                 <Box
                   flex={1}
                   background="gray.300"
                   position="relative"
-                  width="360px"
-                  height="360px"
                 >
                   <Carousel
-                    height={"360px"}
-                    width={"360px"}
-                    renderCenterLeftControls={({ previousSlide }) => (
+                    renderCenterLeftControls={props.instance.options.items.length > 1 ? ({ previousSlide }) => (
                       <IconButton
                         aria-label="left"
                         icon={<BiChevronLeft />}
@@ -92,8 +97,8 @@ export default registry
                         size="sm"
                         variant="ghost"
                       />
-                    )}
-                    renderCenterRightControls={({ nextSlide }) => (
+                    ) : null}
+                    renderCenterRightControls={props.instance.options.items.length > 1 ? ({ nextSlide }) => (
                       <IconButton
                         aria-label="left"
                         icon={<BiChevronRight />}
@@ -104,21 +109,18 @@ export default registry
                         variant="ghost"
                         size="sm"
                       />
-                    )}
+                    ) : null}
                   >
                     {props.instance.options.items.map((item) => (
                       <Flex
                         position="relative"
-                        height={"360px"}
-                        width={"360px"}
+                        flex={1}
                         key={item.src}
                       >
-                        <Center>
+                        <Center width={{ xl: "540px", base: "360px", sm: "360px" }} height={{xl: "full", base: "full", sm: "360px"}}>
                           {item.type === "youtube" ? (
                             <ReactPlayer
                               url={`https://www.youtube.com/watch?v=${item.src}`}
-                              height={"360px"}
-                              width={"360px"}
                             />
                           ) : (
                             <>
@@ -142,10 +144,8 @@ export default registry
                     ))}
                   </Carousel>
                 </Box>
-                <Box
+                <VStack
                   flex={1}
-                  padding="20px"
-                  paddingTop="36px !important"
                   width={{ base: "360px", sm: "360px" }}
                   height={{ base: "260px", sm: "360px" }}
                   overflowY="auto"
@@ -153,8 +153,15 @@ export default registry
                   //   __html: props.instance.options.description,
                   // }}
                 >
-                  {props.instance.options.description}
-                </Box>
+                  <Center height={"50px"} width={"full"} className={styles.border} position={"sticky"} top={0}>
+                    <Box fontFamily={"GaliverSans"} textAlign={"center"} fontSize={["20px", "22px"]} color={"white"}>
+                      {props.instance.options.title.toUpperCase()}
+                    </Box>
+                  </Center>
+                  <Box color={"black"} fontWeight={"bold"} padding={"20px"} fontSize={["13px", "17px"]}>
+                    {props.instance.options.description}
+                  </Box>
+                </VStack>
               </Box>
             </ModalBody>
             <ModalFooter display={{ base: "block", sm: "none" }}>
