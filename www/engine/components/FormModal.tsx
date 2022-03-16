@@ -62,7 +62,7 @@ function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
     }
   }, [userInfo.data]);
   const onSubmit = React.useCallback((formData) => {
-    Cookies.set(`${userInfo.data?.nickname}:SetForm`, formData.username, { expires: 1 });
+    Cookies.set(`${userInfo.data?.nickname}:SetForm`, formData.username.value, { expires: 1 });
     disclosure.onOpen && disclosure.onOpen();
   }, [userInfo.data, disclosure]);
   return (
