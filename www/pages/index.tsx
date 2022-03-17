@@ -46,8 +46,8 @@ const Home: NextPage = () => {
   },
     [userInfo.data?.nickname]
   );``
-  const character = Cookies.get(`${userInfo.data?.nickname}:SetCharacter`);
   const username = Cookies.get(`${userInfo.data?.nickname}:SetForm`);
+  const character = Cookies.get(`${username}:SetCharacter`);
   const InteractionBuilder = registry.InteractionBuilders[content.type];
   React.useEffect(() => {
     username && userInfo.data && gameDisclosure.onOpen();
@@ -71,6 +71,7 @@ const Home: NextPage = () => {
   }, [progression]);
   React.useEffect(() => {
     if (userInfo.data?.nickname) {
+      console.log(status, character);
       if (status === "Game Already In Room" && character) {
         !isSelectCharacter && setProgression(100);
         setTimeout(() => {
@@ -99,7 +100,7 @@ const Home: NextPage = () => {
         }, 4000);
       }
     }
-  }, [status]);
+  }, [status, character]);
 
   const logInfo = React.useMemo(() => {
     if (!character) {
@@ -190,7 +191,7 @@ const Home: NextPage = () => {
                         />
                       </HStack>
                     </Box>
-                    <VStack padding="32px" spacing={3} height={"40vh"} width={"full"} justifyContent={"center"}>
+                    <VStack padding="32px" spacing={3} minHeight={"40vh"} width={"full"} justifyContent={"center"}>
                       <Progress hasStripe value={progression} isIndeterminate={progression === 99} colorScheme='red' size={"md"} height={"32px"} width={"full"}/>
                       <Text pt={"20px"} fontSize={["20px", "25px"]} fontWeight={"800"} textAlign={"center"}>
                         {logInfo}

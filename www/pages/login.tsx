@@ -44,7 +44,7 @@ export default function LoginPage() {
   }, [userInfo.data])
   return (
     <Center position={"fixed"} top={0} right={0} left={0} bottom={0} backgroundImage={"./welcome-page.jpeg"} backgroundPosition={"center"} backgroundSize={"cover"} className={styles.mainContent}>
-      <Flex flexDirection={"column"} bg={"white"} borderRadius={"10px"} width={{ md: "25vw", sm: "75vw" }} height={"50vh"}>
+      <Flex flexDirection={"column"} bg={"white"} borderRadius={"10px"} width={{ md: "25vw", sm: "75vw" }} minHeight={"50vh"}>
         <Center flexDirection={"column"} height={"full"}>
           <CircularProgress isIndeterminate color='blue.300' size={"3xs"} marginBottom={"20px"} />
           <HStack fontWeight={"600"} fontSize={"20px"}>
