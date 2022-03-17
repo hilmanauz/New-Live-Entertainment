@@ -78,12 +78,13 @@ const Home: NextPage = () => {
           setContent(carousel.build({
             id: "123041",
             options: {
-              description: "Hi welcome to the prototype version of the New Land Experience. The current version of metaverse, still has a lot of bugs. Hopefully it can still provide new experiences, in enjoying your virtual events . Lets play on New Land Experience!",
+              description: `Hi welcome to the prototype version of the New Land Experience. The current version of the metaverse is still in the development phase. But, hopefully, it can still provide new experiences in enjoying your virtual events. So, let's play on the New Land Experience`,
+              variant: "standard-carousel",
               title: "New Land Experience",
               items:
                 [
                   {
-                    src: "./gate.jpeg",
+                    src: "./background.jpeg",
                     type: "image"
                   }
                 ]
@@ -121,7 +122,7 @@ const Home: NextPage = () => {
       }
     }
   }, [status, progression, character])
-
+  console.log(content);
   unityContext.on("ObjectIdentity", function (string) {
     const [typeContent, name] = string.split("|");
     switch (typeContent) {
@@ -132,19 +133,25 @@ const Home: NextPage = () => {
           videoID: "gElfIo6uw4g",
         },
       }))
+      break;
       case "carousel":
       setContent(carousel.build({
         id: "123041",
         options: {
-          description: "",
           title: name,
+          variant: "full-carousel",
           items:
             [{
-              type: "youtube",
-              src: "gElfIo6uw4g",
+              type: "image",
+              src: "./banner.jpeg",
+            }, {
+              type: "image",
+              src: "./stage.png",
+              desc: `Hi! New Land Experience is your future metaverse. Soon, you can do many things inside of New Land Experience. It is your Live Concert Venue, NFT Mall, E-commerce, Virtual Gallery, Virtual Auditorium and many things! New Land Experience is your new world!`
             }]
         },
       }))
+      break;
     }
   });
 

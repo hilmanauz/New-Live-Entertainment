@@ -1,7 +1,7 @@
-import { Box, VStack, HStack, Center, Spacer, FormControl, Select, Button, Text, Input, Flex, UseDisclosureProps } from '@chakra-ui/react';
+import { Box, VStack, HStack, Center, Spacer, FormControl, Select, Button, Text, Input, Flex, UseDisclosureProps, useToast } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
 import React from 'react'
-import { useForm } from 'react-hook-form';
+import { useForm, UseFormReturn } from 'react-hook-form';
 import useUserInfo from '../hooks/useUserInfo';
 import styles from "../../styles/Home.module.css";
 import _ from 'lodash';
@@ -38,7 +38,7 @@ function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
       },
       username: {
         value: "",
-        placeholder: "John Doe"
+        placeholder: "Your character name"
       },
       gender: {
         value: "Male",
@@ -58,13 +58,20 @@ function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
   React.useEffect(() => {
     if (userInfo.data) {
       formRef.setValue("name.value", userInfo.data.name);
-      formRef.setValue("username.value", userInfo.data.nickname);
     }
   }, [userInfo.data]);
+  const toast = useToast();
   const onSubmit = React.useCallback((formData) => {
+    const values = Object.values(formData);
+    // @ts-ignore
+    if (values.find(item => !item.value)) return toast({
+      title: "Form must be filled in completely",
+      status: "error",
+    });
     Cookies.set(`${userInfo.data?.nickname}:SetForm`, formData.username.value, { expires: 1 });
     disclosure.onOpen && disclosure.onOpen();
   }, [userInfo.data, disclosure]);
+  const errorMessage = formRef.formState.errors;
   return (
     <>
       <Center position={"fixed"} top={0} right={0} left={0} bottom={0} backgroundImage={"./welcome-page.jpeg"} backgroundPosition={"center"} backgroundSize={"cover"} className={styles.mainContent}>
@@ -86,7 +93,7 @@ function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
                           <Spacer />
                           <Text textAlign={"end"}>:</Text>
                         </Center>
-                        <FormControl width={"50%"} isRequired={key === "age" || key === "username" ? true : false}>
+                        <FormControl width={"50%"}>
                           {
                             key === "gender" || key === "age" ?
                               <Select variant={"flushed"} {...formRef.register(`${key}.value`)} fontWeight={"bold"} fontSize={"xl"}>
@@ -99,7 +106,10 @@ function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
                               :
                               <>
                                 {/* @ts-ignore */}
-                                <Input type={key === "age" ? "number" : "text"} variant={"flushed"} fontWeight={"bold"} fontSize={"xl"} {...formRef.register(`${key}.value`)} placeholder={data[key].placeholder} />
+                                <Input placeholder={data[key].placeholder} type={key === "age" ? "number" : "text"} variant={"flushed"} fontWeight={"bold"} fontSize={"xl"} {...formRef.register(`${key}.value`, {
+                                  onChange: () => formRef.clearErrors("name.value")
+                                })} 
+                                />
                               </>
                           }
                         </FormControl>

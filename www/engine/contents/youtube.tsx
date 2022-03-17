@@ -1,4 +1,4 @@
-import { Modal, ModalOverlay, ModalContent, ModalCloseButton, ModalBody, Box, IconButton, Center, ModalFooter, Button, useDisclosure } from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent, ModalCloseButton, ModalBody, Box, IconButton, Center, ModalFooter, Button, useDisclosure, AspectRatio } from "@chakra-ui/react";
 import React from "react";
 import ReactPlayer from "react-player";
 import registry from "./registry";
@@ -35,11 +35,11 @@ export default registry
         >
           <ModalBody margin={"0px"}
           overflow="hidden"
-          padding={"0px"} >
-            <Box display={{ base: "block", sm: "flex" }}>
-              <iframe style={{display:"block", width:"100%", height:"95vh"}} src="https://cdn.siar.us/player/?link=nle.siar.us/nle/live"
+          padding={"0px"} height={"95vh"}>
+            <AspectRatio ratio={1} display={{ base: "block", sm: "flex" }} height={"95vh"}>
+              <iframe src="https://cdn.siar.us/player/?link=nle.siar.us/nle/live"
                 scrolling="no" frameBorder="0" allow="autoplay" allowFullScreen />
-            </Box>
+            </AspectRatio>
           </ModalBody>
         </ModalContent>
       </Modal>
