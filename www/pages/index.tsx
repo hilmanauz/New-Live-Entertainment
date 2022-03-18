@@ -176,7 +176,9 @@ const Home = () => {
   
   if (token?.length && user?.name) return <FormModal user={user} />
 
-  return user?.username && token ? <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundImage={"./welcome-page.jpeg"} backgroundSize={"cover"} /> : <WelcomePage /> 
+  if (!token?.length && !user?.username) return <WelcomePage /> 
+
+  return <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundImage={"./welcome-page.jpeg"} backgroundSize={"cover"} />
 }
 
 export default Home
