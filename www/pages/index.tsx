@@ -55,7 +55,6 @@ const Home = () => {
       });
     }
   }, [progression, user?.username]);
-  console.log(status);
   React.useEffect(() => {
     if (userInfo.data?.nickname) {
       if (status === "Game Already In Room") {
@@ -177,7 +176,7 @@ const Home = () => {
   
   if (token?.length && user?.name) return <FormModal user={user} />
 
-  return user?.username || token ? <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundImage={"./welcome-page.jpeg"} backgroundSize={"cover"} /> : <WelcomePage /> 
+  return user?.username && token ? <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundImage={"./welcome-page.jpeg"} backgroundSize={"cover"} /> : <WelcomePage /> 
 }
 
 export default Home
