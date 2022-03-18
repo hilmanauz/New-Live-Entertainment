@@ -8,7 +8,7 @@ import _ from 'lodash';
 import qoreContext from '../qore';
 import { UserInstance } from '../helpers';
  
-function FormModal({ user }: { user: UserInstance }) {
+function FormModal({ user, setUser }: { user: UserInstance, setUser: React.Dispatch<React.SetStateAction<UserInstance | undefined>>}) {
   const insertUser = qoreContext.table("users").useUpdateRow();
   const formRef = useForm<{
     username: {
@@ -75,7 +75,8 @@ function FormModal({ user }: { user: UserInstance }) {
       status: "error",
     });
     const query = values.map(([key, object])=> [key, object.value]);
-    await insertUser.updateRow(`${user.id}`, Object.fromEntries(query), {networkPolicy: "network-only"});
+    const userInserted = await insertUser.updateRow(`${user?.id}`, Object.fromEntries(query)) as UserInstance;
+    setUser(userInserted);
   }, [user]);
   return (
     <>

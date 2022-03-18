@@ -26,10 +26,18 @@ const Home = () => {
   const userInfo = useUserInfo();
   const [progression, setProgression] = React.useState(0);
   const [status, setStatus] = React.useState("");
+  const [user, setUser] = React.useState<UserInstance>();
   const [content, setContent] = React.useState<Instance<any>>({options: {}, id: "", type: ""})
   const unityContext = useUnityContext();
   const token = Cookies.get("token");
-  const user = qoreContext.useCurrentUser().user as UserInstance;
+  const currentUser = qoreContext.useCurrentUser();
+
+  React.useEffect(() => {
+    if (currentUser.user) {
+      setUser(currentUser.user  as UserInstance);
+    }
+  }, [currentUser.user])
+  
   React.useEffect(() => {
     if (user?.username) {
       unityContext.on("progress", function (progression) {
@@ -43,6 +51,7 @@ const Home = () => {
   },
     [user?.username]
   );
+
   const InteractionBuilder = registry.InteractionBuilders[content.type];
   
   React.useEffect(() => {
@@ -174,9 +183,9 @@ const Home = () => {
     </>
   )
   
-  if (token?.length && user?.name) return <FormModal user={user} />
+  if (token?.length && user?.name) return <FormModal user={user} setUser={setUser} />
 
-  if (!token?.length && !user?.username) return <WelcomePage /> 
+  if (!user && currentUser.status === "error") return <WelcomePage /> 
 
   return <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundImage={"./welcome-page.jpeg"} backgroundSize={"cover"} />
 }
