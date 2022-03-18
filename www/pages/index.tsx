@@ -122,7 +122,6 @@ const Home: NextPage = () => {
       }
     }
   }, [status, progression, character])
-  console.log(content);
   unityContext.on("ObjectIdentity", function (string) {
     const [typeContent, name] = string.split("|");
     switch (typeContent) {
