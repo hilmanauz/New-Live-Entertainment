@@ -22,7 +22,7 @@ export default registry
       }, [props.instance]);
       const unityContext = useUnityContext();
       const handleCloseModal = React.useCallback(() => {
-        unityContext.send("play buton", "PlayMusic()");
+        unityContext.send("PlayButton", "PlayMusic", "");
         disclosure.onClose();
       }, [unityContext])
       return (

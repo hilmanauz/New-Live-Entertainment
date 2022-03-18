@@ -5,9 +5,11 @@ import { useForm, UseFormReturn } from 'react-hook-form';
 import useUserInfo from '../hooks/useUserInfo';
 import styles from "../../styles/Home.module.css";
 import _ from 'lodash';
-
-function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
-  const userInfo = useUserInfo();
+import qoreContext from '../qore';
+import { UserInstance } from '../helpers';
+ 
+function FormModal({ user }: { user: UserInstance }) {
+  const insertUser = qoreContext.table("users").useUpdateRow();
   const formRef = useForm<{
     username: {
       value: string,
@@ -56,15 +58,15 @@ function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
   });
   const data = formRef.watch();
   React.useEffect(() => {
-    if (userInfo.data) {
-      formRef.setValue("name.value", userInfo.data.name);
+    if (user) {
+      formRef.setValue("name.value", user?.name);
     }
-  }, [userInfo.data]);
+  }, [user?.name]);
   const toast = useToast();
-  const onSubmit = React.useCallback((formData) => {
-    const values = Object.values(formData);
+  const onSubmit = React.useCallback(async (formData) => {
+    const values : [string, {value: string, placeholder: string}][] = Object.entries(formData);
     // @ts-ignore
-    if (values.find(item => !item.value)) return toast({
+    if (values.find(([key, object]) => !object.value)) return toast({
       title: "Form must be filled in completely",
       status: "error",
     });
@@ -72,9 +74,9 @@ function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
       title: "Username must be at least 5 until 9 characters",
       status: "error",
     });
-    Cookies.set(`${userInfo.data?.nickname}:SetForm`, formData.username.value, { expires: 1 });
-    disclosure.onOpen && disclosure.onOpen();
-  }, [userInfo.data, disclosure]);
+    const query = values.map(([key, object])=> [key, object.value]);
+    await insertUser.updateRow(`${user.id}`, Object.fromEntries(query), {networkPolicy: "network-only"});
+  }, [user]);
   return (
     <>
       <Center position={"fixed"} top={0} right={0} left={0} bottom={0} backgroundImage={"./welcome-page.jpeg"} backgroundPosition={"center"} backgroundSize={"cover"} className={styles.mainContent}>

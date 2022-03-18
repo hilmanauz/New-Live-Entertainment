@@ -1,7 +1,5 @@
-import ReactDOM from "react-dom";
 import { Modal, ModalOverlay, ModalContent, ModalBody, Center, Box, Img, VStack, Button, Text, useToast, Progress, CircularProgress, HStack, ModalCloseButton, ModalFooter, ModalHeader, useDisclosure, IconButton, Flex, Spacer, Icon, ChakraProvider } from '@chakra-ui/react';
 import { BiArrowToRight, BiAt, BiChevronLeft, BiChevronRight, BiFullscreen, BiInfoCircle, BiMailSend, BiSkipNext, BiVoicemail } from "react-icons/bi";
-import type { InferGetServerSidePropsType, NextPage } from 'next'
 import useUserInfo from '../engine/hooks/useUserInfo';
 import Unity from "react-unity-webgl";
 import React from 'react';
@@ -9,8 +7,6 @@ import useUnityContext from '../engine/hooks/useUnityContext';
 import Cookies from 'js-cookie';
 import styles from "../styles/Home.module.css";
 import { ReactTypical } from '@deadcoder0904/react-typical'
-import ReactPlayer from 'react-player';
-import Carousel from "nuka-carousel";
 import FormModal from '../engine/components/FormModal';
 import WelcomePage from '../engine/components/WelcomePage';
 import registry from '../engine/contents/registry';
@@ -19,10 +15,8 @@ import {
   carousel,
   youtube,
 } from "../engine/contents/loader";
-import auth0, { Auth0UserProfile, WebAuth } from "auth0-js";
-import { decode } from "string-encode-decode";
-import cookies from "next-cookies";
-import { QoreClient } from "@feedloop/qore-client";
+import qoreContext from "../engine/qore";
+import { UserInstance } from "../engine/helpers";
 
 function ContentWrapper(props: { children: React.ReactNode }) {
   return <ChakraProvider>{props.children}</ChakraProvider>;
@@ -32,16 +26,12 @@ const Home = () => {
   const userInfo = useUserInfo();
   const [progression, setProgression] = React.useState(0);
   const [status, setStatus] = React.useState("");
-  const gameDisclosure = useDisclosure();
   const [content, setContent] = React.useState<Instance<any>>({options: {}, id: "", type: ""})
-  const [isSelectCharacter, setIsSelectCharacter] = React.useState(false);
   const unityContext = useUnityContext();
-  const boxDisclosure = useDisclosure();
-  // React.useEffect(() => {
-  //   props.token && Cookies.set("token", props.token, {expires: 1})
-  // }, [])
+  const token = Cookies.get("token");
+  const user = qoreContext.useCurrentUser().user as UserInstance;
   React.useEffect(() => {
-    if (userInfo.data?.nickname) {
+    if (user?.username) {
       unityContext.on("progress", function (progression) {
         if (progression === 1) {
           setProgression(99);
@@ -51,39 +41,25 @@ const Home = () => {
       });
     }
   },
-    [userInfo.data?.nickname]
-  );``
-  const username = Cookies.get(`${userInfo.data?.nickname}:SetForm`);
-  const character = Cookies.get(`${username}:SetCharacter`);
+    [user?.username]
+  );
   const InteractionBuilder = registry.InteractionBuilders[content.type];
-  React.useEffect(() => {
-    username && userInfo.data && gameDisclosure.onOpen();
-  }, [username]);
-
-  const accessToken = Cookies.get("accessToken");
   
   React.useEffect(() => {
     if (progression === 99) {
-      const username = Cookies.get(`${userInfo.data?.nickname}:SetForm`);
       setTimeout(() => {
-        unityContext.send("PlayerNameInput", "HandlePlayerIdentity", `${username}|${character ? true : false}|${character ? character : 1}`);
+        unityContext.send("PlayerNameInput", "HandlePlayerIdentity", `${user?.username}|false|1`);
       }, 4000);
-      unityContext.on("PlayerIdentity", function (userName, alreadyChooseCharacter, character) {
-        setIsSelectCharacter(true);
-        Cookies.set(`${userName}:SetCharacter`, character, { expires: 1 });
-      });
       unityContext.on("StartGame", function (message) {
         setStatus(message);
       });
     }
-  }, [progression]);
+  }, [progression, user?.username]);
+  console.log(status);
   React.useEffect(() => {
     if (userInfo.data?.nickname) {
-      console.log(status, character);
-      if (status === "Game Already In Room" && character) {
-        !isSelectCharacter && setProgression(100);
+      if (status === "Game Already In Room") {
         setTimeout(() => {
-          !isSelectCharacter && setProgression(101);
           setContent(carousel.build({
             id: "123041",
             options: {
@@ -99,38 +75,28 @@ const Home = () => {
                 ]
             },
           }))
-        }, !isSelectCharacter ? 3000 : 1000);
-        return;
-      } else if (status === "Game Already Start" && !character) {
+        }, 500);
+      } else if (status === "Game Already Start") {
         setProgression(100);
         setTimeout(() => {
           setProgression(101);
         }, 4000);
       }
     }
-  }, [status, character]);
+  }, [status]);
 
   const logInfo = React.useMemo(() => {
-    if (!character) {
-      if (typeof window !== "undefined" && window.screen.availWidth <= 768) {
-        return <>
-          <p>Note: For mobile web user.</p><br /><p>Please use landscape mode</p>
-        </>      
-      } else {
-        return "-Don't forget to choose your character-";
-      }
+    if (progression === 99 && status === "Game Already Start") {
+      return "-Joining the room-"
+    } else if (typeof window !== "undefined" && window.screen.availWidth <= 768) {
+      return <>
+        <p>Note: For mobile web user.</p><br /><p>Please use landscape mode</p>
+      </>      
     } else {
-      if (progression === 99 && status === "Game Already Start") {
-        return "-Joining the room-"
-      } else if (typeof window !== "undefined" && window.screen.availWidth <= 768) {
-        return <>
-          <p>Note: For mobile web user.</p><br /><p>Please use landscape mode</p>
-        </>      
-      } else {
-        return `${Math.round(progression < 99 ? progression : progression + 1)}%`
-      }
+      return `${Math.round(progression < 99 ? progression : progression + 1)}%`
     }
-  }, [status, progression, character])
+  }, [status, progression]);
+  
   unityContext.on("ObjectIdentity", function (string) {
     const [typeContent, name] = string.split("|");
     switch (typeContent) {
@@ -162,20 +128,8 @@ const Home = () => {
       break;
     }
   });
-
-  if (!userInfo.data && !userInfo.error) return (
-    <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundImage={"./welcome-page.jpeg"} backgroundSize={"cover"} />
-  )
-
-  // const handleOnClickFullscreen = () => {
-  //   unityContext.setFullscreen(true);
-  //   if (window.screen.availWidth <= 768 && window.screen.orientation.type.startsWith("potrait")) {
-  //     screen.orientation.lock("landscape");
-  //   }
-  // }
-  if (!gameDisclosure.isOpen && accessToken?.length && userInfo.data) return <FormModal disclosure={gameDisclosure} />
-
-  if (gameDisclosure.isOpen) return (
+  
+  if (user?.username) return (
     <>
       <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundColor={"black"} backgroundImage={"./background.jpeg"} backgroundSize={"cover"}>
         {
@@ -220,33 +174,10 @@ const Home = () => {
       </Box>
     </>
   )
+  
+  if (token?.length && user?.name) return <FormModal user={user} />
 
-  return <WelcomePage />
+  return user?.username || token ? <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundImage={"./welcome-page.jpeg"} backgroundSize={"cover"} /> : <WelcomePage /> 
 }
 
 export default Home
-
-
-// export const getServerSideProps = async (context: any) => {
-//   const {email} = cookies(context);
-//   if (!email) return {props: {}};
-//   const client = new QoreClient({
-//     endpoint: process.env.QORE_ENDPOINT!,
-//     adminSecret: process.env.ADMIN_SECRET
-//   });
-//   const verifiedEmail = decode(email);
-//   let token = "";
-//   if (verifiedEmail?.includes("@") && (verifiedEmail?.includes(".com") || verifiedEmail?.includes(".io"))) {
-//     try {
-//       token = await client.authenticate(
-//         verifiedEmail,
-//         ""
-//       );
-//     } catch (error) {
-//       await client.table("users").insertRow({
-//         external_id: verifiedEmail,
-//       })
-//     }
-//   }
-//   return {props: {token}}
-// };

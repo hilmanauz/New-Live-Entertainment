@@ -3,12 +3,12 @@ import createQoreContext from "@feedloop/qore-react";
 import Cookies from "js-cookie";
 
 const client = new QoreClient({
-  endpoint: process.env.QORE_ENDPOINT!,
+  endpoint: "https://staging-qore-data-lawyer-170534.qore.dev",
   getToken: () => {
     return Cookies.get("token");
   },
   onError: (err) => {
-    alert(err.message);
+    console.log(err.message);
   },
 });
 

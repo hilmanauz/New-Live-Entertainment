@@ -9,6 +9,7 @@ import { Box, Center, CircularProgress, HStack, VStack, Text, Flex } from "@chak
 import useUserInfo from "../engine/hooks/useUserInfo";
 import { ReactTypical } from '@deadcoder0904/react-typical'
 import { decode, encode } from "string-encode-decode";
+import axios from "axios";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -26,7 +27,8 @@ export default function LoginPage() {
       const accessToken = authResult.accessToken;
 
       if (!accessToken) return;
-
+      const qoreToken = await axios.post("/api/exchange-token", {token: accessToken});
+      Cookies.set("token", qoreToken.data.token, {expires: 1});
       Cookies.set("accessToken", accessToken, { expires: 1 });
     })();
   }, []);
@@ -34,8 +36,6 @@ export default function LoginPage() {
     if (userInfo.data) {
       const parsedQuery = qs.parse(window.location.search);
       const entrypoint = parsedQuery.entrypoint;
-      let email = encode(userInfo.data?.email!);
-      Cookies.set("email", email, { expires: 1 });
       Cookies.remove(`${userInfo.data?.nickname}:SetForm`);
       Cookies.remove(`${userInfo.data?.nickname}:SetCharacter`)
       if (typeof entrypoint === "string") {
