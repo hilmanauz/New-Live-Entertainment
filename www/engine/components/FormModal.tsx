@@ -71,29 +71,28 @@ function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
     Cookies.set(`${userInfo.data?.nickname}:SetForm`, formData.username.value, { expires: 1 });
     disclosure.onOpen && disclosure.onOpen();
   }, [userInfo.data, disclosure]);
-  const errorMessage = formRef.formState.errors;
   return (
     <>
       <Center position={"fixed"} top={0} right={0} left={0} bottom={0} backgroundImage={"./welcome-page.jpeg"} backgroundPosition={"center"} backgroundSize={"cover"} className={styles.mainContent}>
-        <Box bg={"white"} borderRadius={"10px"} width={{ md: "25vw", sm: "75vw" }} height={"55vh"}>
+        <Box bg={"white"} borderRadius={"10px"} width={{ md: "30vw", sm: "75vw" }} minHeight={"55vh"}>
           <VStack height={"full"} flexDirection={"column"}>
             <Center width={"full"} height={"100px"} className={styles.border} borderTopRadius={"10px"}>
               <Box fontFamily={"GaliverSans"} textAlign={"center"} fontSize={["20px", "25px"]} color={"white"}>
                 New Land Experience
               </Box>
             </Center>
-            <Flex flex={1}>
+            <Center flex={1}>
               <form onSubmit={formRef.handleSubmit(onSubmit)}>
-                <VStack padding={"32px"} paddingBottom={"20px"} fontSize={"2xl"} gap={4} height={"full"}>
+                <VStack paddingBottom={"20px"} fontSize={"2xl"} gap={4} width={{ md: "25vw", sm: "70vw" }}>
                   {
                     Object.entries(data).map(([key, value]) =>
                       <HStack width={"100%"} key={key}>
-                        <Center alignItems={"flex-end"} width={"50%"} height={"full"} fontFamily={"GaliverSans"}>
+                        <Center alignItems={"flex-end"} width={"40%"} height={"full"} fontFamily={"GaliverSans"}>
                           <Text textAlign={"start"}>{_.capitalize(key)}</Text>
                           <Spacer />
                           <Text textAlign={"end"}>:</Text>
                         </Center>
-                        <FormControl width={"50%"}>
+                        <FormControl width={"60%"}>
                           {
                             key === "gender" || key === "age" ?
                               <Select variant={"flushed"} {...formRef.register(`${key}.value`)} fontWeight={"bold"} fontSize={"xl"}>
@@ -122,7 +121,7 @@ function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
                   </Button>
                 </VStack>
               </form>
-            </Flex>
+            </Center>
           </VStack>
         </Box>
       </Center>
