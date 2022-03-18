@@ -68,6 +68,10 @@ function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
       title: "Form must be filled in completely",
       status: "error",
     });
+    if (formData.username.value.length < 5 || formData.username.value.length > 9) return toast({
+      title: "Username must be at least 5 until 9 characters",
+      status: "error",
+    });
     Cookies.set(`${userInfo.data?.nickname}:SetForm`, formData.username.value, { expires: 1 });
     disclosure.onOpen && disclosure.onOpen();
   }, [userInfo.data, disclosure]);
