@@ -22,13 +22,13 @@ function LoginModal() {
     });
   }, []);
   return (
-    <VStack height={"full"}>
-      <Center width={"full"} height={"175px"} className={styles.border} borderTopRadius={"10px"}>
+    <VStack minHeight={"50vh"}>
+      <Center width={"full"} height={"100px"} className={styles.border} borderTopRadius={"10px"}>
         <Box fontFamily={"GaliverSans"} textAlign={"center"} fontSize={["20px", "25px"]} color={"white"}>
           New Land Experience
         </Box>
       </Center>
-      <Center height={"full"} width={"full"} flexDirection={"column"} alignItems={"normal"} color={"black"} padding={"32px"}>
+      <Center flex={1} width={"full"} flexDirection={"column"} alignItems={"normal"} color={"black"} padding={"32px"}>
         <VStack spacing={4}>
           <Button
             leftIcon={<BiMailSend fontSize={"26px"} />}

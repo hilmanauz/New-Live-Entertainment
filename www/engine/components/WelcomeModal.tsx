@@ -7,7 +7,7 @@ function WelcomeModal({ disclosure }: { disclosure: UseDisclosureProps }) {
   return (
     <>
       <Box width={"full"} height={"100px"}className={styles.border} borderTopRadius={"10px"} />
-      <VStack textAlign={"center"} height={"90%"} width={"full"} paddingY={"10px"} paddingX={"32px"} spacing={1} color={"black"}>
+      <VStack textAlign={"center"} flex={1} width={"full"} paddingY={"10px"} paddingX={"32px"} spacing={1} color={"black"}>
         <Text className={styles.welcomeHeader} fontSize={["40px", "60px"]}>Hello..</Text>
         <Text paddingX={"50px"} fontWeight={"600"} fontSize={["13px", "20px"]} className={styles.welcomeBody}>{
           "Welcome to the prototype version of the New Land Experience 😊. Hopefully it can provide a new experience in enjoying virtual events. Lets play on New Land Experience"

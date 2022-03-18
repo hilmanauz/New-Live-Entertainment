@@ -79,7 +79,7 @@ function FormModal({ disclosure }: { disclosure: UseDisclosureProps }) {
     <>
       <Center position={"fixed"} top={0} right={0} left={0} bottom={0} backgroundImage={"./welcome-page.jpeg"} backgroundPosition={"center"} backgroundSize={"cover"} className={styles.mainContent}>
         <Box bg={"white"} borderRadius={"10px"} width={{ md: "30vw", sm: "75vw" }} minHeight={"55vh"}>
-          <VStack height={"full"} flexDirection={"column"}>
+          <VStack minHeight={"55vh"} flexDirection={"column"}>
             <Center width={"full"} height={"100px"} className={styles.border} borderTopRadius={"10px"}>
               <Box fontFamily={"GaliverSans"} textAlign={"center"} fontSize={["20px", "25px"]} color={"white"}>
                 New Land Experience

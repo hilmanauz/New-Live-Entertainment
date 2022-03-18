@@ -135,7 +135,9 @@ export default registry
                                 allowFullScreen
                               />
                             ) : (
-                              <Img src={item.src} objectFit='cover' />
+                              <>
+                                <Img src={item.src} objectFit='cover' />
+                              </>
                             )}
                           </AspectRatio>
                         ))}
@@ -167,7 +169,7 @@ export default registry
                       renderCenterLeftControls={props.instance.options.items.length > 1 ? ({ previousSlide }) => (
                         <IconButton
                           aria-label="left"
-                          icon={<BiChevronLeft fontSize={"80px"}  />}
+                          icon={<BiChevronLeft fontSize={"50px"}  />}
                           onClick={() => {
                             previousSlide();
                           }}
@@ -181,7 +183,7 @@ export default registry
                       renderCenterRightControls={props.instance.options.items.length > 1 ? ({ nextSlide }) => (
                         <IconButton
                           aria-label="left"
-                          icon={<BiChevronRight fontSize={"80px"} />}
+                          icon={<BiChevronRight fontSize={"50px"} />}
                           colorScheme={"black"}
                           onClick={() => {
                             nextSlide();

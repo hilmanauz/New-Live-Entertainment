@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom";
 import { Modal, ModalOverlay, ModalContent, ModalBody, Center, Box, Img, VStack, Button, Text, useToast, Progress, CircularProgress, HStack, ModalCloseButton, ModalFooter, ModalHeader, useDisclosure, IconButton, Flex, Spacer, Icon, ChakraProvider } from '@chakra-ui/react';
 import { BiArrowToRight, BiAt, BiChevronLeft, BiChevronRight, BiFullscreen, BiInfoCircle, BiMailSend, BiSkipNext, BiVoicemail } from "react-icons/bi";
-import type { NextPage } from 'next'
+import type { InferGetServerSidePropsType, NextPage } from 'next'
 import useUserInfo from '../engine/hooks/useUserInfo';
 import Unity from "react-unity-webgl";
 import React from 'react';
@@ -19,12 +19,16 @@ import {
   carousel,
   youtube,
 } from "../engine/contents/loader";
+import auth0, { Auth0UserProfile, WebAuth } from "auth0-js";
+import { decode } from "string-encode-decode";
+import cookies from "next-cookies";
+import { QoreClient } from "@feedloop/qore-client";
 
 function ContentWrapper(props: { children: React.ReactNode }) {
   return <ChakraProvider>{props.children}</ChakraProvider>;
 }
 
-const Home: NextPage = () => {
+const Home = () => {
   const userInfo = useUserInfo();
   const [progression, setProgression] = React.useState(0);
   const [status, setStatus] = React.useState("");
@@ -33,6 +37,9 @@ const Home: NextPage = () => {
   const [isSelectCharacter, setIsSelectCharacter] = React.useState(false);
   const unityContext = useUnityContext();
   const boxDisclosure = useDisclosure();
+  // React.useEffect(() => {
+  //   props.token && Cookies.set("token", props.token, {expires: 1})
+  // }, [])
   React.useEffect(() => {
     if (userInfo.data?.nickname) {
       unityContext.on("progress", function (progression) {
@@ -54,6 +61,7 @@ const Home: NextPage = () => {
   }, [username]);
 
   const accessToken = Cookies.get("accessToken");
+  
   React.useEffect(() => {
     if (progression === 99) {
       const username = Cookies.get(`${userInfo.data?.nickname}:SetForm`);
@@ -217,3 +225,28 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+
+// export const getServerSideProps = async (context: any) => {
+//   const {email} = cookies(context);
+//   if (!email) return {props: {}};
+//   const client = new QoreClient({
+//     endpoint: process.env.QORE_ENDPOINT!,
+//     adminSecret: process.env.ADMIN_SECRET
+//   });
+//   const verifiedEmail = decode(email);
+//   let token = "";
+//   if (verifiedEmail?.includes("@") && (verifiedEmail?.includes(".com") || verifiedEmail?.includes(".io"))) {
+//     try {
+//       token = await client.authenticate(
+//         verifiedEmail,
+//         ""
+//       );
+//     } catch (error) {
+//       await client.table("users").insertRow({
+//         external_id: verifiedEmail,
+//       })
+//     }
+//   }
+//   return {props: {token}}
+// };

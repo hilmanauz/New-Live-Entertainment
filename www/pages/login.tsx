@@ -3,11 +3,12 @@ import qs from "query-string";
 import Cookies from "js-cookie";
 import { useRouter } from "next/dist/client/router";
 import useWebAuth from "../engine/hooks/useWebAuth";
-import { Auth0DecodedHash } from "auth0-js";
+import { Auth0DecodedHash, Auth0UserProfile, WebAuth } from "auth0-js";
 import styles from "../styles/Home.module.css";
 import { Box, Center, CircularProgress, HStack, VStack, Text, Flex } from "@chakra-ui/react";
 import useUserInfo from "../engine/hooks/useUserInfo";
 import { ReactTypical } from '@deadcoder0904/react-typical'
+import { decode, encode } from "string-encode-decode";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -33,6 +34,8 @@ export default function LoginPage() {
     if (userInfo.data) {
       const parsedQuery = qs.parse(window.location.search);
       const entrypoint = parsedQuery.entrypoint;
+      let email = encode(userInfo.data?.email!);
+      Cookies.set("email", email, { expires: 1 });
       Cookies.remove(`${userInfo.data?.nickname}:SetForm`);
       Cookies.remove(`${userInfo.data?.nickname}:SetCharacter`)
       if (typeof entrypoint === "string") {
@@ -45,7 +48,7 @@ export default function LoginPage() {
   return (
     <Center position={"fixed"} top={0} right={0} left={0} bottom={0} backgroundImage={"./welcome-page.jpeg"} backgroundPosition={"center"} backgroundSize={"cover"} className={styles.mainContent}>
       <Flex flexDirection={"column"} bg={"white"} borderRadius={"10px"} width={{ md: "25vw", sm: "75vw" }} minHeight={"50vh"}>
-        <Center flexDirection={"column"} height={"full"}>
+        <Center flexDirection={"column"} minHeight={"50vh"}>
           <CircularProgress isIndeterminate color='blue.300' size={"3xs"} marginBottom={"20px"} />
           <HStack fontWeight={"600"} fontSize={"20px"}>
             {

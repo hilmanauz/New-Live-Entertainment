@@ -1,6 +1,7 @@
 import { Modal, ModalOverlay, ModalContent, ModalCloseButton, ModalBody, Box, IconButton, Center, ModalFooter, Button, useDisclosure, AspectRatio } from "@chakra-ui/react";
 import React from "react";
 import ReactPlayer from "react-player";
+import useUnityContext from "../hooks/useUnityContext";
 import registry from "./registry";
 
 export default registry
@@ -18,11 +19,16 @@ export default registry
       const disclosure = useDisclosure();
       React.useEffect(() => {
         props.instance && disclosure.onOpen();
-      }, [props.instance])
+      }, [props.instance]);
+      const unityContext = useUnityContext();
+      const handleCloseModal = React.useCallback(() => {
+        unityContext.send("play buton", "PlayMusic()");
+        disclosure.onClose();
+      }, [unityContext])
       return (
       <Modal
         isOpen={disclosure.isOpen}
-        onClose={disclosure.onClose}
+        onClose={handleCloseModal}
         isCentered
       >
         <ModalOverlay />

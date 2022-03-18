@@ -2,6 +2,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import Head from 'next/head'
+import qore from '../engine/qore';
 
 const theme = extendTheme({
   styles: {
@@ -75,7 +76,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <link rel="manifest" href="manifest.json" />
       </Head>
-      <Component {...pageProps} />
+      <qore.context.Provider value={{ client: qore.client }}>
+        <Component {...pageProps} />
+      </qore.context.Provider>
     </ChakraProvider>
   )
 }
