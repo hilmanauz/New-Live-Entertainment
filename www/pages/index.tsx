@@ -42,6 +42,7 @@ const Home = () => {
     if (currentUser.status === "error") {
       if (!currentUser.user) {
         Cookies.remove("token");
+        Cookies.remove("accessToken");
       }
     }
   }, [currentUser])
