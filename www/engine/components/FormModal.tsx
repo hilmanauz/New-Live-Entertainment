@@ -70,8 +70,8 @@ function FormModal({ user, setUser }: { user: UserInstance, setUser: React.Dispa
       title: "Form must be filled in completely",
       status: "error",
     });
-    if (formData.username.value.length < 5 || formData.username.value.length > 9) return toast({
-      title: "Username must be at least 5 until 9 characters",
+    if (formData.username.value.length < 5 || formData.username.value.length > 7) return toast({
+      title: "Username must be at least 5 until 7 characters",
       status: "error",
     });
     const query = values.map(([key, object])=> key === "username" ? [key, object.value.toLowerCase()] : [key, object.value]);
