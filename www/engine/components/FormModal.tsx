@@ -74,7 +74,7 @@ function FormModal({ user, setUser }: { user: UserInstance, setUser: React.Dispa
       title: "Username must be at least 5 until 9 characters",
       status: "error",
     });
-    const query = values.map(([key, object])=> [key, object.value]);
+    const query = values.map(([key, object])=> key === "username" ? [key, object.value.toLowerCase()] : [key, object.value]);
     const userInserted = await insertUser.updateRow(`${user?.id}`, Object.fromEntries(query)) as UserInstance;
     setUser(userInserted);
   }, [user]);
