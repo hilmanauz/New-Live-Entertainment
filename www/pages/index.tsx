@@ -74,7 +74,7 @@ const Home = () => {
     }
   }, [progression, user?.username]);
   React.useEffect(() => {
-    if (userInfo.data?.nickname) {
+    if (user?.username) {
       if (status === "Game Already In Room") {
         setTimeout(() => {
           setContent(carousel.build({
@@ -100,7 +100,7 @@ const Home = () => {
         }, 4000);
       }
     }
-  }, [status]);
+  }, [status, user?.username]);
 
   const logInfo = React.useMemo(() => {
     if (progression === 99 && status === "Game Already Start") {
