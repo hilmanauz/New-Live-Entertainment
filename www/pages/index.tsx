@@ -35,8 +35,16 @@ const Home = () => {
   React.useEffect(() => {
     if (currentUser.user) {
       setUser(currentUser.user  as UserInstance);
-    }
+    } 
   }, [currentUser.user])
+
+  React.useEffect(() => {
+    if (currentUser.status === "error") {
+      if (!currentUser.user) {
+        Cookies.remove("token");
+      }
+    }
+  }, [currentUser])
   
   React.useEffect(() => {
     if (user?.username) {
