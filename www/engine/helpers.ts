@@ -28,10 +28,10 @@ const getDataByExternalId = (email: any) => {
 }
 
 export type UserInstance = {
-  age: string
-  city: string
+  age?: string
+  city?: string
   gender: string
-  id: 24
+  id: string
   name: string
   username: string
 };

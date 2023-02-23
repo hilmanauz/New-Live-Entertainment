@@ -34,8 +34,6 @@ const Home = () => {
   React.useEffect(() => {
     if (userInfo.data) {
       setUser({
-        age: userInfo.data?.age || 0,
-        city: userInfo.data?.city || "",
         gender: userInfo.data?.gender || "",
         username: userInfo.data?.nickname,
         name: userInfo.data?.name,
