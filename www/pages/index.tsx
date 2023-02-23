@@ -29,23 +29,29 @@ const Home = () => {
   const [user, setUser] = React.useState<UserInstance>();
   const [content, setContent] = React.useState<Instance<any>>({options: {}, id: "", type: ""})
   const unityContext = useUnityContext();
-  const token = Cookies.get("token");
-  const currentUser = qoreContext.useCurrentUser();
+  const accessToken = Cookies.get("accessToken");
 
   React.useEffect(() => {
-    if (currentUser.user) {
-      setUser(currentUser.user  as UserInstance);
+    if (userInfo.data) {
+      setUser({
+        age: userInfo.data?.age || 0,
+        city: userInfo.data?.city || "",
+        gender: userInfo.data?.gender || "",
+        username: userInfo.data?.nickname,
+        name: userInfo.data?.name,
+        id: userInfo.data?.clientID
+      });
     } 
-  }, [currentUser.user])
+  }, [userInfo.data])
 
   React.useEffect(() => {
-    if (currentUser.status === "error") {
-      if (!currentUser.user) {
+    if (userInfo.error?.code === 400) {
+      if (!userInfo.data) {
         Cookies.remove("token");
         Cookies.remove("accessToken");
       }
     }
-  }, [currentUser])
+  }, [userInfo])
   
   React.useEffect(() => {
     if (user?.username) {
@@ -192,9 +198,9 @@ const Home = () => {
     </>
   )
   
-  if (token?.length && user?.name) return <FormModal user={user} setUser={setUser} />
+  if (accessToken?.length && user?.name) return <FormModal user={user} setUser={setUser} />
 
-  if (!user && currentUser.status === "error") return <WelcomePage /> 
+  if (!user && userInfo.error?.code === 400) return <WelcomePage /> 
 
   return <Box position={"absolute"} width={"100vw"} height={"100vh"} backgroundImage={"./welcome-page.jpeg"} backgroundSize={"cover"} />
 }

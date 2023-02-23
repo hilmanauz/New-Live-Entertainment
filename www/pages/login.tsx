@@ -27,8 +27,8 @@ export default function LoginPage() {
       const accessToken = authResult.accessToken;
 
       if (!accessToken) return;
-      const qoreToken = await axios.post("/api/exchange-token", {token: accessToken});
-      Cookies.set("token", qoreToken.data.token, {expires: 1});
+      // const qoreToken = await axios.post("/api/exchange-token", {token: accessToken});
+      // Cookies.set("token", qoreToken.data.token, {expires: 1});
       Cookies.set("accessToken", accessToken, { expires: 1 });
     })();
   }, []);
@@ -37,7 +37,7 @@ export default function LoginPage() {
       const parsedQuery = qs.parse(window.location.search);
       const entrypoint = parsedQuery.entrypoint;
       Cookies.remove(`${userInfo.data?.nickname}:SetForm`);
-      Cookies.remove(`${userInfo.data?.nickname}:SetCharacter`)
+      Cookies.remove(`${userInfo.data?.nickname}:SetCharacter`);
       if (typeof entrypoint === "string") {
         setTimeout(() => {
           router.push(entrypoint);
